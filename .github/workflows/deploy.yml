@@ -46,7 +46,7 @@ jobs:
 
       - name: Copy backend build to EC2
         run: |
-          scp -i my-website-server.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r build/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/my-website-backend/
+          scp -i my-website-server.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r dist/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/my-website-backend/
 
       - name: Restart PM2
         run: |
