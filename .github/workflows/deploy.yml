@@ -1,0 +1,53 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Create .env file
+        run: |
+            echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+            echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+            echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+            echo "GOLDENRACK_AMI_ID=${{ secrets.GOLDENRACK_AMI_ID }}" >> .env
+            echo "LOVETOKENS_AMI_ID=${{ secrets.LOVETOKENS_AMI_ID }}" >> .env
+            echo "ACTION_START=${{ secrets.ACTION_START }}" >> .env
+            echo "ACTION_STOP=${{ secrets.ACTION_STOP }}" >> .env
+            echo "ACTION_TERMINATE=${{ secrets.ACTION_TERMINATE }}" >> .env
+            echo "LAMBDA_FUNCTION_URL=${{ secrets.LAMBDA_FUNCTION_URL }}" >> .env
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the app
+        run: npm run build
+
+      - name: Decode SSH Key
+        run: echo "${{ secrets.EC2_SSH_KEY }}" | base64 --decode > my-website-server.pem
+
+      - name: Set permissions
+        run: chmod 600 my-website-server.pem
+
+      - name: Copy backend build to EC2
+        run: |
+          scp -i my-website-server.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -r build/* ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/my-website-backend/
+
+      - name: Restart PM2
+        run: |
+          ssh -i my-website-server.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "pm2 restart my-website-backend"
