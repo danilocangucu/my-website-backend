@@ -6,8 +6,6 @@ export const getAmiIdByProjectName = (projectName: ProjectName): string => {
     [ProjectName.LOVETOKENS]: process.env.LOVETOKENS_AMI_ID,
   };
 
-  console.log(`AMI ID map: ${JSON.stringify(amiIdMap)}`);
-
   if (!amiIdMap[projectName]) {
     throw new Error(
       `Project name '${projectName}' is not valid. Please check the provided project name.`
