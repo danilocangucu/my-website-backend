@@ -37,6 +37,8 @@ export const startEC2InstanceService = async (
       .status(responseFromLambda.status)
       .json({ message: responseFromLambda.data });
   } catch (err) {
-    return res.status(500).json({ message: "Failed to start EC2 instance" });
+    return res
+      .status(500)
+      .json({ message: `Failed to start EC2 instance with amidId ${amiId}` });
   }
 };
