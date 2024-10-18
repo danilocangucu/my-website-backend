@@ -1,7 +1,6 @@
 import { Response } from "express";
 import { InstanceState, ProjectName } from "../types/ec2Types";
-import { getAmiIdByProjectName } from "../utils/amiHelper";
-import { postToLambda } from "../utils/httpClient";
+import { createPayload, fetchAmiId, handleEC2Action } from "../utils/amiHelper";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -12,33 +11,26 @@ export const startEC2InstanceService = async (
 ): Promise<Response<any, Record<string, any>>> => {
   let amiId;
   try {
-    amiId = getAmiIdByProjectName(projectName);
+    amiId = fetchAmiId(projectName);
   } catch (err) {
-    if (err instanceof Error) {
-      if (err.message.includes("Project name")) {
-        return res.status(400).json({ message: err.message });
-      } else if (err.message.includes("AMI ID is undefined")) {
-        return res.status(500).json({ message: err.message });
-      }
-    }
+    return res.status(400).json({ message: (err as Error).message });
   }
 
-  const payload = {
-    amiKeyPair: {
-      amiId,
-      keyName: projectName,
-    },
-    instanceState: InstanceState.START,
-  };
+  const payload = createPayload(amiId!, projectName, InstanceState.START);
+  return handleEC2Action(payload, res, InstanceState.START);
+};
 
+export const terminateEC2InstanceService = async (
+  projectName: ProjectName,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
+  let amiId;
   try {
-    const responseFromLambda = await postToLambda(payload);
-    return res
-      .status(responseFromLambda.status)
-      .json({ message: responseFromLambda.data });
+    amiId = fetchAmiId(projectName);
   } catch (err) {
-    return res
-      .status(500)
-      .json({ message: `Failed to start EC2 instance with amidId ${amiId}` });
+    return res.status(400).json({ message: (err as Error).message });
   }
+
+  const payload = createPayload(amiId!, projectName, InstanceState.TERMINATE);
+  return handleEC2Action(payload, res, InstanceState.TERMINATE);
 };
