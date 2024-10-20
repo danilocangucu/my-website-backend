@@ -12,6 +12,7 @@ export const startEC2Instance: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
+  console.log("req.body", req.body);
   const { error, value } = startEC2Validator.validate(req.body);
 
   if (error) {
@@ -44,6 +45,8 @@ export const getEC2InstanceStatus: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
+  console.log("req.body", req.body);
+
   const { error, value } = startEC2Validator.validate(req.body);
 
   if (error) {
