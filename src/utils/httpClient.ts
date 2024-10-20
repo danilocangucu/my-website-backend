@@ -1,5 +1,6 @@
 import axios from "axios";
 import dotenv from "dotenv";
+import logger from "./logger";
 
 dotenv.config();
 
@@ -17,17 +18,19 @@ export const postToLambda = async (payload: any) => {
       },
     });
 
+    logger.info(`Payload posted to Lambda: ${payload}
+      Response from Lambda: ${response.data}`);
+
     return response;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error("Error posting to Lambda function:", error);
-      throw new Error(
-        error.response?.data?.message ||
-          "Failed to communicate with Lambda function"
-      );
+      // handle better known errors like: 400 –  deleting a non-existent resource
+      throw new Error("Failed to communicate with Lambda function: " + error);
     } else {
-      console.error("Unexpected error posting to Lambda function:", error);
-      throw new Error("Failed to communicate with Lambda function");
+      throw new Error(
+        "An unexpected error occurred while communicating with the Lambda function: " +
+          error
+      );
     }
   }
 };

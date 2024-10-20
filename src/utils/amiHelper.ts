@@ -1,6 +1,7 @@
 import { InstanceState, ProjectName } from "../types/ec2Types";
 import { Response } from "express";
 import { postToLambda } from "./httpClient";
+import logger from "./logger";
 
 export const getAmiIdByProjectName = (projectName: ProjectName): string => {
   const amiIdMap: { [key in ProjectName]: string | undefined } = {
@@ -10,7 +11,8 @@ export const getAmiIdByProjectName = (projectName: ProjectName): string => {
 
   if (!amiIdMap[projectName]) {
     throw new Error(
-      `Project name '${projectName}' is not valid. Please check the provided project name.`
+      `Project '${projectName}' is not valid.
+      Please check the provided project name.`
     );
   }
 
@@ -18,10 +20,12 @@ export const getAmiIdByProjectName = (projectName: ProjectName): string => {
 
   if (amiId === undefined) {
     throw new Error(
-      `AMI ID is undefined for project '${projectName}'. Please ensure the corresponding environment variable is set.`
+      `AMI ID is undefined for project '${projectName}'.
+      Please ensure the corresponding environment variable is set.`
     );
   }
 
+  logger.info(`Fetched AMI ID for project ${projectName}: ${amiId}`);
   return amiId;
 };
 
@@ -54,12 +58,22 @@ export const handleEC2Action = async (
 ): Promise<Response<any, Record<string, any>>> => {
   try {
     const responseFromLambda = await postToLambda(payload);
+    logger.info(
+      `${responseFromLambda.data}.
+      Payload: ${JSON.stringify(payload)}`
+    );
     return res
       .status(responseFromLambda.status)
       .json({ message: responseFromLambda.data });
   } catch (err) {
-    return res
-      .status(500)
-      .json({ message: `Failed to ${action} EC2 instance` });
+    logger.error(
+      `Failed to ${action} EC2 instance.
+      Payload: ${JSON.stringify(payload)}
+      Error: ${(err as Error).message}`
+    );
+
+    return res.status(500).json({
+      message: `Failed to ${action} EC2 instance. Please try again later.`,
+    });
   }
 };
