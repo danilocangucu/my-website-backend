@@ -18,8 +18,8 @@ export const postToLambda = async (payload: any) => {
       },
     });
 
-    logger.info(`Payload posted to Lambda: ${payload}
-      Response from Lambda: ${response.data}`);
+    logger.info(`Payload posted to Lambda: ${JSON.stringify(payload)}
+      Response.data from Lambda: ${JSON.stringify(response.data)}`);
 
     return response;
   } catch (error) {
