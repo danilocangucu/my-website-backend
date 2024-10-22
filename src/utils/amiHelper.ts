@@ -53,27 +53,25 @@ export const createPayload = (
 
 export const handleEC2Action = async (
   payload: any,
-  res: Response,
   action: InstanceState
-): Promise<Response<any, Record<string, any>>> => {
+): Promise<any> => {
   try {
     const responseFromLambda = await postToLambda(payload);
+
     logger.info(
-      `${responseFromLambda.data}.
-      Payload: ${JSON.stringify(payload)}`
+      `Handling EC2 action "${action}" done. Lambda response received with status: ${responseFromLambda.status}`
     );
-    return res
-      .status(responseFromLambda.status)
-      .json({ message: responseFromLambda.data });
+
+    return responseFromLambda;
   } catch (err) {
     logger.error(
       `Failed to ${action} EC2 instance.
       Payload: ${JSON.stringify(payload)}
       Error: ${(err as Error).message}`
     );
-
-    return res.status(500).json({
-      message: `Failed to ${action} EC2 instance. Please try again later.`,
-    });
+    throw new Error(
+      `Failed to ${action} EC2 instance. Please try again later.`
+    );
   }
 };
+
