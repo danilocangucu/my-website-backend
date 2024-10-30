@@ -1,6 +1,8 @@
 import { Pool } from "pg";
 import dotenv from "dotenv";
 
+// TODO rename file to databaseConfig.ts
+
 dotenv.config();
 
 const pool = new Pool({
