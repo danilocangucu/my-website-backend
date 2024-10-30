@@ -31,9 +31,9 @@ jobs:
             echo "ACTION_STOP=${{ secrets.ACTION_STOP }}" >> .env
             echo "ACTION_TERMINATE=${{ secrets.ACTION_TERMINATE }}" >> .env
             echo "LAMBDA_FUNCTION_URL=${{ secrets.LAMBDA_FUNCTION_URL }}" >> .env
-            echo "ZOHO_EMAIL"=${{ secrets.ZOHO_EMAIL }}" >> .env
-            echo "ZOHO_PASSWORD"=${{ secrets.ZOHO_PASSWORD }}" >> .env
-            echo "MY_EMAIL"=${{ secrets.MY_EMAIL }}" >> .env
+            echo "ZOHO_EMAIL=${{ secrets.ZOHO_EMAIL }}" >> .env
+            echo "ZOHO_PASSWORD=${{ secrets.ZOHO_PASSWORD }}" >> .env
+            echo "MY_EMAIL=${{ secrets.MY_EMAIL }}" >> .env
 
       - name: Install dependencies
         run: npm install
