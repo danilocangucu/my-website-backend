@@ -35,6 +35,9 @@ jobs:
             echo "ZOHO_PASSWORD=${{ secrets.ZOHO_PASSWORD }}" >> .env
             echo "MY_EMAIL=${{ secrets.MY_EMAIL }}" >> .env
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Build the app
         run: npm run build
 
