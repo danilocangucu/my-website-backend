@@ -46,19 +46,16 @@ export const logInstanceStatusToDB = async (
   status: string
 ) => {
   try {
-    // TODO modify naming
-    const actualInstanceId = await getLastInstanceIdByProjectName(instanceId);
-
     const queryText = `
       INSERT INTO instance_statuses (instance_id, status, status_time)
       VALUES ($1, $2, NOW())
       RETURNING id;
     `;
 
-    const result = await pool.query(queryText, [actualInstanceId, status]);
+    const result = await pool.query(queryText, [instanceId, status]);
     const newStatusEntryId = result.rows[0].id;
     logger.info(
-      `Status "${status}" of instance with ID ${actualInstanceId} logged to DB. Entry ID: ${newStatusEntryId}`
+      `Status "${status}" of instance with ID ${instanceId} logged to DB. Entry ID: ${newStatusEntryId}`
     );
   } catch (err) {
     throw new Error(`Failed to log instance status to DB: ${err}`);
