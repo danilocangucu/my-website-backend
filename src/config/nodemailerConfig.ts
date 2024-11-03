@@ -1,9 +1,24 @@
 import dotenv from "dotenv";
+import { errorEmailConfigValidator } from "../validators/errorEmailConfigValidator";
+import logger from "../utils/logger";
 
 dotenv.config();
 
-console.log("ZOHO_EMAIL:", process.env.ZOHO_EMAIL);
-console.log("ZOHO_PASSWORD:", process.env.ZOHO_PASSWORD);
+const envVarsToValidate = {
+  ZOHO_EMAIL: process.env.ZOHO_EMAIL,
+  ZOHO_PASSWORD: process.env.ZOHO_PASSWORD,
+  MY_EMAIL: process.env.MY_EMAIL,
+};
+
+const { error, value: envVars } =
+  errorEmailConfigValidator.validate(envVarsToValidate);
+
+if (error) {
+  logger.error(`Config validation error in nodemailerConfig: ${error.message}`);
+  process.exit(1);
+} else {
+  logger.info("Config validation success in nodemailerConfig.");
+}
 
 interface EmailConfig {
   host: string;
@@ -21,10 +36,10 @@ const errorEmailConfig: EmailConfig = {
   port: 465,
   secure: true,
   auth: {
-    user: process.env.ZOHO_EMAIL as string,
-    pass: process.env.ZOHO_PASSWORD as string,
+    user: envVars.ZOHO_EMAIL,
+    pass: envVars.ZOHO_PASSWORD,
   },
-  recipients: [process.env.MY_EMAIL as string],
+  recipients: [envVars.MY_EMAIL],
 };
 
 export default errorEmailConfig;

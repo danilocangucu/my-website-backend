@@ -8,6 +8,7 @@ export const reportError: RequestHandler = async (
 ) => {
   const { errorMessage, errorStack } = req.body;
 
+  // TODO use Joi to validate the request body
   if (!errorMessage || !errorStack) {
     res.status(400).json({ message: "Error message and stack are required." });
     return;

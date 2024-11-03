@@ -21,7 +21,7 @@ export const sendErrorEmail = async (
   try {
     await transporter.sendMail({
       from: errorEmailConfig.auth.user,
-      to: "daniloccangucu@gmail.com",
+      to: errorEmailConfig.recipients.join(", "),
       subject: "Error!",
       text: `An error occurred:\n\n${errorMessage}\n\nStack trace:\n${errorStack}`,
     });
