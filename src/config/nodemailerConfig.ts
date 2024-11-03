@@ -2,6 +2,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+console.log("ZOHO_EMAIL:", process.env.ZOHO_EMAIL);
+console.log("ZOHO_PASSWORD:", process.env.ZOHO_PASSWORD);
+
 interface EmailConfig {
   host: string;
   port: number;

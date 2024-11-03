@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { Request, Response, RequestHandler } from "express";
 import { sendErrorEmail } from "../utils/errorHandler";
 import logger from "../utils/logger";
 
