@@ -110,15 +110,18 @@ export const getEC2InstanceHealthService = async (
 ): Promise<Response<any, Record<string, any>>> => {
   const projectHealthUrl = `https://${projectName}.danilocangucu.net/api/v1/health`;
 
-  console.log("getEC2InstanceHealthService");
-  const lastInstanceId = await getLastInstanceIdByProjectName(projectName);
-  let lastInstanceStatus;
-  if (lastInstanceId) {
-    lastInstanceStatus = await getLastInstanceStatus(lastInstanceId);
-  }
+  let lastInstanceId: string | null = null;
+  let lastInstanceStatus: any;
 
   try {
     console.log("try");
+
+    lastInstanceId = await getLastInstanceIdByProjectName(projectName);
+
+    if (lastInstanceId) {
+      lastInstanceStatus = await getLastInstanceStatus(lastInstanceId);
+    }
+
     const requestStartingTime = new Date();
 
     const result = await Promise.race([
