@@ -66,7 +66,26 @@ export const logInstanceHealthToDB = async (
   responseTime: number,
   instanceId: string
 ) => {
+  console.log("logging health to db");
+  console.log("instanceId", instanceId);
+  console.log("healthStatus", healthStatus);
+  console.log("responseTime", responseTime);
+
   try {
+    const validateInstanceQuery = `
+    SELECT 1 FROM instances WHERE instance_id = $1 LIMIT 1;
+  `;
+
+    const validationResult = await pool.query(validateInstanceQuery, [
+      instanceId,
+    ]);
+    if (validationResult.rows.length === 0) {
+      console.log("Instance ID does not exist in the database");
+      throw new Error(
+        `Instance ID ${instanceId} does not exist in the database.`
+      );
+    }
+
     const queryText = `
     INSERT INTO health_checks (check_time, status, response_time, instance_id)
     VALUES (NOW(), $1, $2, $3)
