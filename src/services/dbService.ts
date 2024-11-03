@@ -40,49 +40,52 @@ export const logInstanceToDB = async (
   }
 };
 
+// TODO Refactor to use instanceId instead of projectName
 export const logInstanceStatusToDB = async (
   instanceId: string,
   status: string
 ) => {
   try {
+    // TODO modify naming
+    const actualInstanceId = await getLastInstanceIdByProjectName(instanceId);
+
     const queryText = `
       INSERT INTO instance_statuses (instance_id, status, status_time)
       VALUES ($1, $2, NOW())
       RETURNING id;
     `;
 
-    const result = await pool.query(queryText, [instanceId, status]);
+    const result = await pool.query(queryText, [actualInstanceId, status]);
     const newStatusEntryId = result.rows[0].id;
     logger.info(
-      `Status "${status}" of instance with ID ${instanceId} logged to DB. Entry ID: ${newStatusEntryId}`
+      `Status "${status}" of instance with ID ${actualInstanceId} logged to DB. Entry ID: ${newStatusEntryId}`
     );
   } catch (err) {
     throw new Error(`Failed to log instance status to DB: ${err}`);
   }
 };
 
+// TODO Refactor to use instanceId instead of projectName
 export const logInstanceHealthToDB = async (
   healthStatus: string,
   responseTime: number,
   instanceId: string
 ) => {
-  console.log("logging health to db");
-  console.log("instanceId", instanceId);
-  console.log("healthStatus", healthStatus);
-  console.log("responseTime", responseTime);
-
   try {
+    // TODO modify naming
+    const actualInstanceId = await getLastInstanceIdByProjectName(instanceId);
+
     const validateInstanceQuery = `
     SELECT 1 FROM instances WHERE instance_id = $1 LIMIT 1;
   `;
 
     const validationResult = await pool.query(validateInstanceQuery, [
-      instanceId,
+      actualInstanceId,
     ]);
     if (validationResult.rows.length === 0) {
       console.log("Instance ID does not exist in the database");
       throw new Error(
-        `Instance ID ${instanceId} does not exist in the database.`
+        `Instance ID ${actualInstanceId} does not exist in the database.`
       );
     }
 
@@ -95,11 +98,11 @@ export const logInstanceHealthToDB = async (
     const result = await pool.query(queryText, [
       healthStatus,
       responseTime,
-      instanceId,
+      actualInstanceId,
     ]);
     const newHealthEntryId = result.rows[0].id;
     logger.info(
-      `Health check for instance with ID ${instanceId}, status "${healthStatus}" logged to DB. Entry ID: ${newHealthEntryId}`
+      `Health check for instance with ID ${actualInstanceId}, status "${healthStatus}" logged to DB. Entry ID: ${newHealthEntryId}`
     );
   } catch (err) {
     throw new Error(`Failed to log instance health to DB: ${err}`);
