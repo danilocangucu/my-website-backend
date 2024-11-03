@@ -179,7 +179,7 @@ export const getEC2InstanceHealthService = async (
       }
       await logInstanceHealthToDB("unhealthy", responseTime, projectName);
       return res
-        .status(500)
+        .status(204)
         .json({ message: `Project ${projectName} is unhealthy` });
     }
   } catch (error) {
