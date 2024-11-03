@@ -14,10 +14,14 @@ const { error, value: envVars } =
   errorEmailConfigValidator.validate(envVarsToValidate);
 
 if (error) {
-  logger.error(`Config validation error in nodemailerConfig: ${error.message}`);
+  logger.error(
+    `Critical error during startup: Configuration validation failed in nodemailerConfig: ${error.message}`
+  );
   process.exit(1);
 } else {
-  logger.info("Config validation success in nodemailerConfig.");
+  logger.info(
+    "Application started successfully: Configuration validated in nodemailerConfig."
+  );
 }
 
 interface EmailConfig {
