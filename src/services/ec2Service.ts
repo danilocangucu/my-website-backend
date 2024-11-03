@@ -103,11 +103,18 @@ export const terminateEC2InstanceService = async (
   return handleEC2Action(payload, InstanceState.TERMINATE);
 };
 
+// TODO how could getEC2InstanceHealthService be refactored?
 export const getEC2InstanceHealthService = async (
   projectName: ProjectName,
   res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   const projectHealthUrl = `https://${projectName}.danilocangucu.net/api/v1/health`;
+
+  const lastInstanceId = await getLastInstanceIdByProjectName(projectName);
+  let lastInstanceStatus;
+  if (lastInstanceId) {
+    lastInstanceStatus = await getLastInstanceStatus(lastInstanceId);
+  }
 
   try {
     const requestStartingTime = new Date();
@@ -121,8 +128,15 @@ export const getEC2InstanceHealthService = async (
     const responseTime =
       requestEndTime.getTime() - requestStartingTime.getTime();
 
-    const lastInstanceId = await getLastInstanceIdByProjectName(projectName);
-    const lastInstanceStatus = await getLastInstanceStatus(lastInstanceId);
+    if (!lastInstanceId) {
+      await logInstanceHealthToDB(
+        "no_previous_instance",
+        responseTime,
+        projectName
+      );
+      logger.info(`No previous instance found for project ${projectName}.`);
+      return res.status(204).end();
+    }
 
     if (
       (result as AxiosResponse).status === 200 &&
@@ -131,7 +145,7 @@ export const getEC2InstanceHealthService = async (
       logger.info(`Project ${projectName} is healthy`);
       await logInstanceHealthToDB("healthy", responseTime, projectName);
 
-      if (lastInstanceStatus.status === "starting") {
+      if (lastInstanceStatus && lastInstanceStatus.status === "starting") {
         await logInstanceStatusToDB(lastInstanceId, "running");
       }
 
@@ -142,6 +156,7 @@ export const getEC2InstanceHealthService = async (
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60000);
 
       if (
+        lastInstanceStatus &&
         lastInstanceStatus.status === "starting" &&
         lastInstanceStatus.statusTime > fiveMinutesAgo
       ) {
@@ -157,7 +172,7 @@ export const getEC2InstanceHealthService = async (
         });
       }
 
-      if (lastInstanceStatus.status !== "terminated") {
+      if (lastInstanceStatus && lastInstanceStatus.status !== "terminated") {
         await logInstanceStatusToDB(lastInstanceId, "terminated");
       }
       await logInstanceHealthToDB("unhealthy", responseTime, projectName);
@@ -167,23 +182,25 @@ export const getEC2InstanceHealthService = async (
     }
   } catch (error) {
     const errorMessage = (error as any).message;
-    const lastInstanceId = await getLastInstanceIdByProjectName(projectName);
-    const lastInstanceStatus = await getLastInstanceStatus(lastInstanceId);
 
     if (errorMessage.includes("ECONNREFUSED")) {
       console.log("if ECONNREFUSED");
       if (
-        lastInstanceStatus.status === "running" ||
-        lastInstanceStatus.status === "unhealthy_starting"
+        (lastInstanceStatus && lastInstanceStatus.status === "running") ||
+        (lastInstanceStatus &&
+          lastInstanceStatus.status === "unhealthy_starting")
       ) {
         await logInstanceHealthToDB("unhealthy_terminating", 0, projectName);
-        await logInstanceStatusToDB(lastInstanceId, "unhealthy_terminating");
-        logger.warn(
-          `EC2 instance might be starting for ${projectName}: ${errorMessage}`
-        );
-        return res.status(500).json({
-          message: "EC2 instance is probably terminating.",
-        });
+        if (lastInstanceId) {
+          await logInstanceStatusToDB(lastInstanceId, "unhealthy_terminating");
+          logger.warn(
+            `EC2 instance might be starting for ${projectName}: ${errorMessage}`
+          );
+          return res.status(500).json({
+            message: "EC2 instance is probably terminating.",
+          });
+        }
+        // TODO if NOT lastInstanceId
       } else {
         console.log("else ECONNREFUSED");
         logger.warn(
@@ -194,16 +211,19 @@ export const getEC2InstanceHealthService = async (
             "EC2 instance is starting. Please try again in a few minutes.",
         });
       }
-    } else if (lastInstanceStatus.status === "starting") {
+    } else if (lastInstanceStatus && lastInstanceStatus.status === "starting") {
       await logInstanceHealthToDB("starting_unhealthy", 0, projectName);
-      await logInstanceStatusToDB(lastInstanceId, "starting_unhealthy");
-      logger.warn(
-        `EC2 instance might be still starting for ${projectName}: ${errorMessage}`
-      );
-      return res.status(202).json({
-        message:
-          "EC2 instance is still starting. Please try again in a few minutes.",
-      });
+      if (lastInstanceId) {
+        await logInstanceStatusToDB(lastInstanceId, "starting_unhealthy");
+        logger.warn(
+          `EC2 instance might be still starting for ${projectName}: ${errorMessage}`
+        );
+        return res.status(202).json({
+          message:
+            "EC2 instance is still starting. Please try again in a few minutes.",
+        });
+      }
+      // TODO if NOT (lastInstanceStatus && lastInstanceStatus.status === "starting")
     }
 
     logger.error(

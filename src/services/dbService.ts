@@ -89,7 +89,7 @@ export const logInstanceHealthToDB = async (
 
 export const getLastInstanceIdByProjectName = async (
   projectName: string
-): Promise<string> => {
+): Promise<string | null> => {
   try {
     const queryText = `
       SELECT instances.instance_id, instances.id
