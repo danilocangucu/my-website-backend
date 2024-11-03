@@ -114,8 +114,6 @@ export const getEC2InstanceHealthService = async (
   let lastInstanceStatus: any;
 
   try {
-    console.log("try");
-
     lastInstanceId = await getLastInstanceIdByProjectName(projectName);
 
     if (lastInstanceId) {
@@ -133,16 +131,6 @@ export const getEC2InstanceHealthService = async (
     const responseTime =
       requestEndTime.getTime() - requestStartingTime.getTime();
 
-    if (!lastInstanceId) {
-      await logInstanceHealthToDB(
-        "no_previous_instance",
-        responseTime,
-        projectName
-      );
-      logger.info(`No previous instance found for project ${projectName}.`);
-      return res.status(204).end();
-    }
-
     if (
       (result as AxiosResponse).status === 200 &&
       (result as AxiosResponse).data === "OK"
@@ -150,7 +138,11 @@ export const getEC2InstanceHealthService = async (
       logger.info(`Project ${projectName} is healthy`);
       await logInstanceHealthToDB("healthy", responseTime, projectName);
 
-      if (lastInstanceStatus && lastInstanceStatus.status === "starting") {
+      if (
+        lastInstanceId &&
+        lastInstanceStatus &&
+        lastInstanceStatus.status === "starting"
+      ) {
         await logInstanceStatusToDB(lastInstanceId, "running");
       }
 
@@ -161,6 +153,7 @@ export const getEC2InstanceHealthService = async (
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60000);
 
       if (
+        lastInstanceId &&
         lastInstanceStatus &&
         lastInstanceStatus.status === "starting" &&
         lastInstanceStatus.statusTime > fiveMinutesAgo
@@ -177,7 +170,11 @@ export const getEC2InstanceHealthService = async (
         });
       }
 
-      if (lastInstanceStatus && lastInstanceStatus.status !== "terminated") {
+      if (
+        lastInstanceId &&
+        lastInstanceStatus &&
+        lastInstanceStatus.status !== "terminated"
+      ) {
         await logInstanceStatusToDB(lastInstanceId, "terminated");
       }
       await logInstanceHealthToDB("unhealthy", responseTime, projectName);
@@ -186,12 +183,9 @@ export const getEC2InstanceHealthService = async (
         .json({ message: `Project ${projectName} is unhealthy` });
     }
   } catch (error) {
-    console.log("catch");
     const errorMessage = (error as any).message;
-    console.log("errorMessage", errorMessage);
 
     if (errorMessage.includes("ECONNREFUSED")) {
-      console.log("if ECONNREFUSED");
       if (
         (lastInstanceStatus && lastInstanceStatus.status === "running") ||
         (lastInstanceStatus &&
@@ -209,7 +203,6 @@ export const getEC2InstanceHealthService = async (
         }
         // TODO if NOT lastInstanceId
       } else {
-        console.log("else ECONNREFUSED");
         logger.warn(
           `EC2 instance might be starting for ${projectName}: ${errorMessage}`
         );
@@ -218,6 +211,10 @@ export const getEC2InstanceHealthService = async (
             "EC2 instance is starting. Please try again in a few minutes.",
         });
       }
+    } else if (errorMessage.includes("No instance found in DB")) {
+      return res.status(204).json({
+        message: `No instance record found in DB for project ${projectName}`,
+      });
     } else if (lastInstanceStatus && lastInstanceStatus.status === "starting") {
       await logInstanceHealthToDB("starting_unhealthy", 0, projectName);
       if (lastInstanceId) {
