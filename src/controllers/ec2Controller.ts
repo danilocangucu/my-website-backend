@@ -24,6 +24,7 @@ export const startEC2Instance: RequestHandler = async (
   await startEC2InstanceService(projectName, res);
 };
 
+// TODO check why is not returning the response
 export const terminateEC2Instance: RequestHandler = async (
   req: Request,
   res: Response
