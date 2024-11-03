@@ -110,6 +110,7 @@ export const getEC2InstanceHealthService = async (
 ): Promise<Response<any, Record<string, any>>> => {
   const projectHealthUrl = `https://${projectName}.danilocangucu.net/api/v1/health`;
 
+  console.log("getEC2InstanceHealthService");
   const lastInstanceId = await getLastInstanceIdByProjectName(projectName);
   let lastInstanceStatus;
   if (lastInstanceId) {
@@ -117,6 +118,7 @@ export const getEC2InstanceHealthService = async (
   }
 
   try {
+    console.log("try");
     const requestStartingTime = new Date();
 
     const result = await Promise.race([
@@ -181,7 +183,9 @@ export const getEC2InstanceHealthService = async (
         .json({ message: `Project ${projectName} is unhealthy` });
     }
   } catch (error) {
+    console.log("catch");
     const errorMessage = (error as any).message;
+    console.log("errorMessage", errorMessage);
 
     if (errorMessage.includes("ECONNREFUSED")) {
       console.log("if ECONNREFUSED");
