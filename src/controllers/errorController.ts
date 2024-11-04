@@ -21,7 +21,7 @@ export const reportError: RequestHandler = async (
     if (error instanceof Error) {
       logger.error(`Failed to report error: ${error.message}`);
     } else {
-      logger.error("Failed to report error: Unknown error");
+      logger.error("Failed to report error; not an instance of Error:", error);
     }
     res.status(500).json({ message: "Failed to report error." });
   }
