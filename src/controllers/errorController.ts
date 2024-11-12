@@ -1,6 +1,6 @@
 import { Request, Response, RequestHandler } from "express";
 import { sendErrorEmail } from "../utils/errorHandler";
-import logger from "../utils/logger";
+import { logger } from "../utils/logger";
 
 export const reportError: RequestHandler = async (
   req: Request,

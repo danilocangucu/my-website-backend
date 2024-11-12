@@ -3,7 +3,7 @@ import { InstanceState, ProjectName } from "../types/ec2Types";
 import { createPayload, fetchAmiId, handleEC2Action } from "../utils/amiHelper";
 import dotenv from "dotenv";
 import axios, { AxiosResponse } from "axios";
-import logger from "../utils/logger";
+import { logger } from "../utils/logger";
 import {
   logInstanceToDB,
   logInstanceStatusToDB,

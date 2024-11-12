@@ -1,5 +1,5 @@
 import pool from "../config/database";
-import logger from "../utils/logger";
+import { logger } from "../utils/logger";
 
 export const logInstanceToDB = async (
   instanceId: string,

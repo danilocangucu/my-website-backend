@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { emailConfigValidator } from "../validators/errorEmailConfigValidator";
-import logger from "../utils/logger";
+import { logger } from "../utils/logger";
 
 // TODO nodemailerConfigs.ts needs to be refactored
 

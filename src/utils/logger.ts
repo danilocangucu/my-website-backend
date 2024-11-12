@@ -6,7 +6,11 @@ const logFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} [${level}]: ${message}`;
 });
 
-const logger = winston.createLogger({
+const hohohoLogFormat = printf(({ level, message, timestamp }) => {
+  return `[HOHOHO] ${timestamp} ${level}: ${message}`;
+});
+
+export const logger = winston.createLogger({
   level: "info",
   format: combine(timestamp(), colorize(), logFormat),
   transports: [
@@ -15,4 +19,11 @@ const logger = winston.createLogger({
   ],
 });
 
-export default logger;
+export const hohohoLogger = winston.createLogger({
+  level: "info",
+  format: combine(timestamp(), colorize(), hohohoLogFormat),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "logs/hohoho.log" }),
+  ],
+});

@@ -3,7 +3,7 @@ import {
   errorEmailConfig,
   hohohoEmailConfig,
 } from "../config/nodemailerConfig";
-import logger from "../utils/logger";
+import { logger } from "../utils/logger";
 
 const transporter = nodemailer.createTransport(errorEmailConfig);
 

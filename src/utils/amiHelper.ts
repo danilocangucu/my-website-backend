@@ -1,7 +1,6 @@
 import { InstanceState, ProjectName } from "../types/ec2Types";
-import { Response } from "express";
 import { postToLambda } from "./httpClient";
-import logger from "./logger";
+import { logger } from "./logger";
 
 export const getAmiIdByProjectName = (projectName: ProjectName): string => {
   const amiIdMap: { [key in ProjectName]: string | undefined } = {
@@ -74,4 +73,3 @@ export const handleEC2Action = async (
     );
   }
 };
-

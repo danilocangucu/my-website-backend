@@ -1,7 +1,7 @@
 import { Response } from "express";
 import nodemailer from "nodemailer";
 
-import logger from "./logger";
+import { logger } from "./logger";
 import { errorEmailConfig } from "../config/nodemailerConfig";
 
 const transporter = nodemailer.createTransport(errorEmailConfig);
