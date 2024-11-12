@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export const errorEmailConfigValidator = Joi.object({
+export const emailConfigValidator = Joi.object({
   ZOHO_EMAIL: Joi.string().email().required().messages({
     "any.required": "ZOHO_EMAIL environment variable is required",
     "string.email": "ZOHO_EMAIL must be a valid email address",

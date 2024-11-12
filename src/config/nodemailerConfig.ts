@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
-import { errorEmailConfigValidator } from "../validators/errorEmailConfigValidator";
+import { emailConfigValidator } from "../validators/errorEmailConfigValidator";
 import logger from "../utils/logger";
+
+// TODO nodemailerConfigs.ts needs to be refactored
 
 dotenv.config();
 
@@ -10,17 +12,37 @@ const envVarsToValidate = {
   MY_EMAIL: process.env.MY_EMAIL,
 };
 
+const hohohoEnvVarsToValidate = {
+  ZOHO_EMAIL: process.env.HOHOHO_ZOHO_EMAIL,
+  ZOHO_PASSWORD: process.env.HOHOHO_ZOHO_PASSWORD,
+  MY_EMAIL: process.env.MY_EMAIL,
+};
+
 const { error, value: envVars } =
-  errorEmailConfigValidator.validate(envVarsToValidate);
+  emailConfigValidator.validate(envVarsToValidate);
 
 if (error) {
   logger.error(
-    `Critical error during startup: Configuration validation failed in nodemailerConfig: ${error.message}`
+    `Critical error during startup: Configuration validation failed in nodemailerConfig for errorEmail: ${error.message}`
   );
   process.exit(1);
 } else {
   logger.info(
-    "Application started successfully: Configuration validated in nodemailerConfig."
+    "Success: ErrorEmail Configuration validated in nodemailerConfig."
+  );
+}
+
+const { error: hohohoMailError, value: hohohoEnvVars } =
+  emailConfigValidator.validate(hohohoEnvVarsToValidate);
+
+if (hohohoMailError) {
+  logger.error(
+    `Critical error during startup: Configuration validation failed in nodemailerConfig for hohohoEmail: ${hohohoMailError.message}`
+  );
+  process.exit(1);
+} else {
+  logger.info(
+    "Success: HohohoEmail Configuration validated in nodemailerConfig."
   );
 }
 
@@ -35,7 +57,7 @@ interface EmailConfig {
   recipients: string[];
 }
 
-const errorEmailConfig: EmailConfig = {
+export const errorEmailConfig: EmailConfig = {
   host: "smtp.zoho.eu",
   port: 465,
   secure: true,
@@ -46,4 +68,13 @@ const errorEmailConfig: EmailConfig = {
   recipients: [envVars.MY_EMAIL],
 };
 
-export default errorEmailConfig;
+export const hohohoEmailConfig: EmailConfig = {
+  host: "smtp.zoho.eu",
+  port: 465,
+  secure: true,
+  auth: {
+    user: hohohoEnvVars.ZOHO_EMAIL,
+    pass: hohohoEnvVars.ZOHO_PASSWORD,
+  },
+  recipients: [hohohoEnvVars.MY_EMAIL],
+};

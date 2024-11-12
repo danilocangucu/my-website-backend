@@ -3,6 +3,7 @@ import cors from "cors";
 
 import ec2Routes from "./routes/ec2Routes";
 import errorRoutes from "./routes/errorRoutes";
+import hohohoRoutes from "./routes/hohohoRoutes";
 
 const app = express();
 
@@ -13,5 +14,6 @@ app.use(express.json());
 
 app.use("/ec2", ec2Routes);
 app.use("/errors", errorRoutes);
+app.use("/hohoho", hohohoRoutes);
 
 export default app;

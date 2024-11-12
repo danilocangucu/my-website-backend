@@ -2,7 +2,7 @@ import { Response } from "express";
 import nodemailer from "nodemailer";
 
 import logger from "./logger";
-import errorEmailConfig from "../config/nodemailerConfig";
+import { errorEmailConfig } from "../config/nodemailerConfig";
 
 const transporter = nodemailer.createTransport(errorEmailConfig);
 
@@ -12,6 +12,15 @@ export const handleValidationError = (res: Response, error: any): Response => {
   return res
     .status(400)
     .json({ message: "Your request didn't pass the validation." });
+};
+
+export const handleHohohoValidationError = (
+  res: Response,
+  error: any
+): Response => {
+  const message = error.details.map((detail: any) => detail.message).join(", ");
+  logger.error(`[HOHOHO] ${message}`);
+  return res.status(400).json({ message });
 };
 
 export const sendErrorEmail = async (
