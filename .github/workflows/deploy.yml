@@ -37,6 +37,8 @@ jobs:
             echo "ZOHO_PASSWORD='${{ secrets.ZOHO_PASSWORD }}'" >> .env
             echo "HOHOHO_ZOHO_EMAIL=${{ secrets.HOHOHO_ZOHO_EMAIL }}" >> .env
             echo "HOHOHO_ZOHO_PASSWORD='${{ secrets.HOHOHO_ZOHO_PASSWORD }}'" >> .env
+            echo "HOHOHO_JWT_SECRET='${{ secrets.HOHOHO_JWT_SECRET }}'" >> .env
+            echo "HOHOHO_JWT_EXPIRY='${{ secrets.HOHOHO_JWT_EXPIRY }}'" >> .env
 
       - name: Install dependencies
         run: npm install
