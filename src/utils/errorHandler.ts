@@ -1,7 +1,7 @@
 import { Response } from "express";
 import nodemailer from "nodemailer";
 
-import { logger } from "./logger";
+import { hohohoLogger, logger } from "./logger";
 import { errorEmailConfig } from "../config/nodemailerConfig";
 
 const transporter = nodemailer.createTransport(errorEmailConfig);
@@ -19,7 +19,7 @@ export const handleHohohoValidationError = (
   error: any
 ): Response => {
   const message = error.details.map((detail: any) => detail.message).join(", ");
-  logger.error(`[HOHOHO] ${message}`);
+  hohohoLogger.error(`${message}`);
   return res.status(400).json({ message });
 };
 

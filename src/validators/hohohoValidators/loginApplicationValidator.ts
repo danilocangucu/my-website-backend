@@ -1,6 +1,7 @@
 import Joi from "joi";
 
-export const loadApplicationValidator = Joi.object({
+// TODO do not allow more than email and code in the request body
+export const loginApplicationValidator = Joi.object({
   email: Joi.string().email().required().messages({
     "string.base": "Email must be a valid email address.",
     "string.empty": "Email is required.",

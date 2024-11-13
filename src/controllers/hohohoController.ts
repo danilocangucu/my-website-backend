@@ -1,32 +1,33 @@
-import { Request, Response, RequestHandler } from "express";
+import { Request, Response, RequestHandler, NextFunction } from "express";
 
-import { startApplicationValidator } from "../validators/hohohoValidators/startApplicationValidator";
+import { registerApplicationValidator } from "../validators/hohohoValidators/registerApplicationValidator";
 import { handleHohohoValidationError } from "../utils/errorHandler";
 import {
+  loginApplicationService,
+  registerApplicationService,
   loadApplicationService,
-  startApplicationService,
 } from "../services/hohohoServices";
-import { loadApplicationValidator } from "../validators/hohohoValidators/loadApplicationValidator";
+import { loginApplicationValidator } from "../validators/hohohoValidators/loginApplicationValidator";
 
-export const startApplication: RequestHandler = async (
+export const registerApplication: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { error, value } = startApplicationValidator.validate(req.body);
+  const { error, value } = registerApplicationValidator.validate(req.body);
 
   if (error) {
     handleHohohoValidationError(res, error);
     return;
   }
 
-  await startApplicationService(value.email, res);
+  await registerApplicationService(value.email, res);
 };
 
-export const loadApplication: RequestHandler = async (
+export const loginApplication: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const { error, value } = loadApplicationValidator.validate(req.body);
+  const { error, value } = loginApplicationValidator.validate(req.body);
 
   if (error) {
     handleHohohoValidationError(res, error);
@@ -35,5 +36,14 @@ export const loadApplication: RequestHandler = async (
 
   const { email, code } = value;
 
-  await loadApplicationService(email, code, res);
+  await loginApplicationService(email, code, res);
+};
+
+export const loadApplication: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  const { applicationInitiationId } = (req as any).auth;
+
+  await loadApplicationService(applicationInitiationId, res);
 };

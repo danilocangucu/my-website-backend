@@ -3,7 +3,7 @@ import {
   errorEmailConfig,
   hohohoEmailConfig,
 } from "../config/nodemailerConfig";
-import { logger } from "../utils/logger";
+import { logger, hohohoLogger } from "../utils/logger";
 
 const transporter = nodemailer.createTransport(errorEmailConfig);
 
@@ -54,12 +54,12 @@ export const sendHohohoEmailService = async (
     };
 
     const info = await transporter.sendMail(mailOptions);
-    logger.info(`Email sent successfully to ${email}: ${info.response}`);
+    hohohoLogger.info(`Email sent successfully to ${email}: ${info.response}`);
   } catch (error) {
     if (error instanceof Error) {
-      logger.error(`Failed to send email to ${email}: ${error.message}`);
+      hohohoLogger.error(`Failed to send email to ${email}: ${error.message}`);
     } else {
-      logger.error(`Failed to send email to ${email}: ${error}`);
+      hohohoLogger.error(`Failed to send email to ${email}: ${error}`);
     }
     if (error instanceof Error) {
       throw new Error(`Email sending failed: ${error.message}`);
