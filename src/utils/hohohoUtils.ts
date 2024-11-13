@@ -1,6 +1,6 @@
 import { randomBytes } from "crypto";
 import {
-  ApplicationDetails,
+  RawApplicationDetails,
   ApplicationDetailsDTO,
 } from "../types/hohohoTypes";
 
@@ -16,26 +16,28 @@ export const generateVerificationCode = (): string => {
 };
 
 export const sanitizeApplicationDetails = (
-  rawData: ApplicationDetails
+  rawData: RawApplicationDetails
 ): ApplicationDetailsDTO => {
   const {
     full_name,
     email_address,
     phone_number,
     preferred_language,
-    website_url,
     website_description,
     website_features,
   } = rawData;
 
   // Map snake_case to camelCase and sanitize
   return {
-    fullName: full_name,
-    emailAddress: email_address,
-    phoneNumber: phone_number,
-    preferredLanguage: preferred_language,
-    websiteUrl: website_url,
-    websiteDescription: website_description,
-    websiteFeatures: website_features ? website_features.split(",") : [],
+    personalInformation: {
+      fullName: full_name,
+      emailAddress: email_address,
+      phoneNumber: phone_number,
+      preferredLanguage: preferred_language,
+    },
+    aboutProject: {
+      websiteDescription: website_description,
+      websiteFeatures: website_features ? website_features.split(",") : [],
+    },
   };
 };
