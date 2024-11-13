@@ -17,6 +17,7 @@ export interface RawApplicationDetails {
   preferred_language: string;
   website_description: string;
   website_features: string;
+  iscompleted: boolean;
 }
 
 export interface ApplicationDetailsDTO {
@@ -30,4 +31,5 @@ export interface ApplicationDetailsDTO {
     websiteDescription: string;
     websiteFeatures: string[];
   };
+  isCompleted: boolean;
 }

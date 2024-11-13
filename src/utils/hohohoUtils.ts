@@ -25,6 +25,7 @@ export const sanitizeApplicationDetails = (
     preferred_language,
     website_description,
     website_features,
+    iscompleted,
   } = rawData;
 
   // Map snake_case to camelCase and sanitize
@@ -39,5 +40,6 @@ export const sanitizeApplicationDetails = (
       websiteDescription: website_description,
       websiteFeatures: website_features ? website_features.split(",") : [],
     },
+    isCompleted: iscompleted,
   };
 };
