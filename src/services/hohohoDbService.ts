@@ -94,7 +94,9 @@ export const loadApplicationInitiationFromDB = async (
       return null;
     }
 
-    hohohoLogger.info(`Application initiation found for email with right code`);
+    hohohoLogger.info(
+      `Application initiation found for email ${email} with right code`
+    );
     return result.rows[0];
   } catch (err) {
     hohohoLogger.error(`Failed to load application initiation from DB: ${err}`);
