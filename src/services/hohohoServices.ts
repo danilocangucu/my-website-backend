@@ -129,7 +129,7 @@ export const loginApplicationService = async (
     hohohoLogger.info(`Application login successful for email: ${email}`);
 
     return res.status(200).send({
-      message: "Login successful.",
+      message: "Login successful. Loading your application...",
       token,
     });
   } catch (error) {
