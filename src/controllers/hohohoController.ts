@@ -5,9 +5,11 @@ import { handleHohohoValidationError } from "../utils/errorHandler";
 import {
   loginApplicationService,
   registerApplicationService,
-  loadApplicationService,
+  getApplicationService,
+  postApplicationService,
 } from "../services/hohohoServices";
 import { loginApplicationValidator } from "../validators/hohohoValidators/loginApplicationValidator";
+import { applicationDataValidator } from "../validators/hohohoValidators/applicationDataValidator";
 
 export const registerApplication: RequestHandler = async (
   req: Request,
@@ -39,11 +41,36 @@ export const loginApplication: RequestHandler = async (
   await loginApplicationService(email, code, res);
 };
 
-export const loadApplication: RequestHandler = async (
+export const getApplication: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
   const { applicationInitiationId } = (req as any).auth;
 
-  await loadApplicationService(applicationInitiationId, res);
+  // TODO validation for applicationInitiationId?
+
+  await getApplicationService(applicationInitiationId, res);
+};
+
+export const postApplication: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  const { applicationInitiationId } = (req as any).auth;
+
+  const applicationData = { ...req.body, applicationInitiationId };
+
+  const { error, value: validatedApplicationData } =
+    applicationDataValidator.validate(applicationData);
+
+  if (error) {
+    handleHohohoValidationError(res, error);
+    return;
+  }
+
+  await postApplicationService(
+    applicationInitiationId,
+    validatedApplicationData,
+    res
+  );
 };

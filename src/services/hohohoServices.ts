@@ -11,9 +11,10 @@ import { sendHohohoEmailService } from "./emailsService";
 import {
   checkApplicationInitiationExistsInDB,
   createEmptyApplicationDetails,
-  loadApplicationDetailsFromDB,
-  loadApplicationInitiationFromDB,
+  getApplicationDetailsFromDB,
+  getApplicationInitiationFromDB,
   logApplicationInitiationToDB,
+  updateApplicationDetailsInDB,
   updateApplicationStatusToActive,
 } from "./hohohoDbService";
 import { ApplicationInitiation } from "../types/hohohoTypes";
@@ -87,7 +88,7 @@ export const loginApplicationService = async (
     }
 
     const applicationInitiation: ApplicationInitiation | null =
-      await loadApplicationInitiationFromDB(email, code);
+      await getApplicationInitiationFromDB(email, code);
 
     if (!applicationInitiation) {
       return res.status(404).send({
@@ -140,12 +141,12 @@ export const loginApplicationService = async (
   }
 };
 
-export const loadApplicationService = async (
+export const getApplicationService = async (
   applicationInitiationId: string,
   res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   try {
-    const applicationDetails = await loadApplicationDetailsFromDB(
+    const applicationDetails = await getApplicationDetailsFromDB(
       Number(applicationInitiationId)
     );
 
@@ -163,16 +164,77 @@ export const loadApplicationService = async (
       sanitizeApplicationDetails(applicationDetails);
 
     hohohoLogger.info(
-      `Application successfully loaded & sanitized for id ${applicationInitiationId}. Sending response.`
+      `Got application successfully & sanitized for id ${applicationInitiationId}. Sending response.`
     );
     return res.status(200).send({
-      message: "Application successfully loaded.",
+      message: "Application successfully retrieved.",
       application: sanitizedApplicationDetails,
     });
   } catch (error) {
     return res.status(500).send({
       message:
         "Failed to load your application. Please contact Danilo for support.",
+    });
+  }
+};
+
+export const postApplicationService = async (
+  applicationInitiationId: number,
+  applicationData: any,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
+  try {
+    const { isCompleted } = applicationData;
+    // Check if the application exists in the DB
+    const existingApplication = await getApplicationDetailsFromDB(
+      applicationInitiationId
+    );
+
+    if (!existingApplication) {
+      hohohoLogger.warn(
+        `No application found for initiation ID ${applicationInitiationId}`
+      );
+      return res.status(404).send({
+        message:
+          "Application not found. Please ensure the correct initiation ID.",
+      });
+    } else if (existingApplication.iscompleted) {
+      hohohoLogger.warn(
+        `Application already submitted for initiation ID ${applicationInitiationId}`
+      );
+      return res.status(400).send({
+        message: "Application already submitted. No further changes allowed.",
+      });
+    }
+
+    hohohoLogger.info(
+      `Updating application for initiation ID ${applicationInitiationId}`
+    );
+    const updatedApplication = await updateApplicationDetailsInDB(
+      applicationInitiationId,
+      applicationData
+    );
+
+    const sanitizedApplicationDetails =
+      sanitizeApplicationDetails(updatedApplication);
+
+    return res.status(200).send({
+      message: isCompleted
+        ? "Application submitted successfully."
+        : "Application saved successfully.",
+      application: sanitizedApplicationDetails,
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      hohohoLogger.error(
+        `Error (Instance of Error) in postApplicationService: ${err.message}`
+      );
+    } else {
+      hohohoLogger.error(`Error in postApplicationService: ${String(err)}`);
+    }
+    return res.status(500).send({
+      message:
+        "Failed to save or submit your application. Please contact Danilo for support.",
     });
   }
 };

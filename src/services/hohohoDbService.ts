@@ -75,7 +75,7 @@ export const checkApplicationInitiationExistsInDB = async (
   }
 };
 
-export const loadApplicationInitiationFromDB = async (
+export const getApplicationInitiationFromDB = async (
   email: string,
   code: string
 ) => {
@@ -99,8 +99,8 @@ export const loadApplicationInitiationFromDB = async (
     );
     return result.rows[0];
   } catch (err) {
-    hohohoLogger.error(`Failed to load application initiation from DB: ${err}`);
-    throw new Error(`Failed to load application initiation from DB: ${err}`);
+    hohohoLogger.error(`Failed to get application initiation from DB: ${err}`);
+    throw new Error(`Failed to get application initiation from DB: ${err}`);
   }
 };
 
@@ -163,7 +163,7 @@ export const updateApplicationStatusToActive = async (
   }
 };
 
-export const loadApplicationDetailsFromDB = async (
+export const getApplicationDetailsFromDB = async (
   applicationInitiationId: number
 ) => {
   try {
@@ -181,11 +181,64 @@ export const loadApplicationDetailsFromDB = async (
     }
 
     hohohoLogger.info(
-      `Application details loaded for application initiation ID ${applicationInitiationId}`
+      `Got Application details for application initiation ID ${applicationInitiationId}`
     );
     return result.rows[0];
   } catch (err) {
-    hohohoLogger.error(`Failed to load application details from DB: ${err}`);
-    throw new Error(`Failed to load application details from DB: ${err}`);
+    hohohoLogger.error(`Failed to get application details from DB: ${err}`);
+    throw new Error(`Failed to get application details from DB: ${err}`);
+  }
+};
+
+export const updateApplicationDetailsInDB = async (
+  applicationInitiationId: number,
+  // TODO fix type for applicationData in updateApplicationInDB
+  applicationData: any
+) => {
+  try {
+    const websiteFeaturesString =
+      applicationData.aboutProject.websiteFeatures.join(",");
+
+    const updateQuery = `
+      UPDATE application_details
+      SET
+        full_name = $2,
+        email_address = $3,
+        phone_number = $4,
+        preferred_language = $5,
+        website_description = $6,
+        website_features = $7,
+        iscompleted = $8
+      WHERE application_initiation_id = $1
+      RETURNING *;
+    `;
+
+    const result = await hohohoPool.query(updateQuery, [
+      applicationInitiationId,
+      applicationData.personalInformation.fullName,
+      applicationData.personalInformation.emailAddress,
+      applicationData.personalInformation.phoneNumber,
+      applicationData.personalInformation.preferredLanguage,
+      applicationData.aboutProject.websiteDescription,
+      websiteFeaturesString,
+      applicationData.isCompleted,
+    ]);
+
+    if (result.rows.length === 0) {
+      hohohoLogger.error(
+        `No application found to update with initiation ID ${applicationInitiationId}`
+      );
+      throw new Error(
+        `No application found to update with initiation ID ${applicationInitiationId}`
+      );
+    }
+
+    hohohoLogger.info(
+      `Updated application details for initiation ID ${applicationInitiationId}`
+    );
+    return result.rows[0]; // Return the updated application details
+  } catch (err) {
+    hohohoLogger.error(`Failed to update application: ${err}`);
+    throw new Error(`Failed to update application: ${err}`);
   }
 };
