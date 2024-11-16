@@ -23,9 +23,24 @@ export const sanitizeApplicationDetails = (
     email_address,
     phone_number,
     preferred_language,
-    website_description,
-    website_features,
-    iscompleted,
+    about_you_work,
+    about_project_context,
+    website_reason,
+    website_main_description,
+    website_features_description,
+    website_main_feature,
+    website_additional_features,
+    website_content_material,
+    current_presence_link1,
+    current_presence_link2,
+    current_presence_link3,
+    reference_website_link1,
+    reference_website_link2,
+    reference_website_link3,
+    final_thoughts,
+    is_complete,
+    created_at,
+    updated_at,
   } = rawData;
 
   // Map snake_case to camelCase and sanitize
@@ -33,13 +48,36 @@ export const sanitizeApplicationDetails = (
     personalInformation: {
       fullName: full_name,
       emailAddress: email_address,
-      phoneNumber: phone_number,
+      phoneNumber: phone_number || null,
       preferredLanguage: preferred_language,
     },
-    aboutProject: {
-      websiteDescription: website_description,
-      websiteFeatures: website_features ? website_features.split(",") : [],
+    aboutYou: {
+      work: about_you_work || null,
+      projectContext: about_project_context || null,
     },
-    isCompleted: iscompleted,
+    aboutYourWebsite: {
+      websiteReason: website_reason || null,
+      websiteMainDescription: website_main_description || null,
+      websiteFeaturesDescription: website_features_description || null,
+      websiteMainFeature: website_main_feature || null,
+      websiteAdditionalFeatures: website_additional_features || null,
+      websiteContentMaterial: website_content_material || null,
+    },
+    linksAndReferences: {
+      currentPresence: {
+        link1: current_presence_link1 || null,
+        link2: current_presence_link2 || null,
+        link3: current_presence_link3 || null,
+      },
+      referenceWebsites: {
+        link1: reference_website_link1 || null,
+        link2: reference_website_link2 || null,
+        link3: reference_website_link3 || null,
+      },
+    },
+    finalThoughts: final_thoughts || null,
+    isComplete: is_complete,
+    createdAt: created_at,
+    updatedAt: updated_at,
   };
 };
