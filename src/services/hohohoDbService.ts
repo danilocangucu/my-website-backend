@@ -139,7 +139,7 @@ export const createEmptyApplicationDetails = async (
         )
       VALUES 
         (
-          $1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+          $1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','', '', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
         )
       RETURNING id;
     `;
