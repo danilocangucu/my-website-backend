@@ -60,6 +60,8 @@ export const postApplication: RequestHandler = async (
 
   const applicationData = { ...req.body, applicationInitiationId };
 
+  // TODO there should be an applicationDataSubmissionValidator that checks nothing is empty
+
   const { error, value: validatedApplicationData } =
     applicationDataValidator.validate(applicationData);
 

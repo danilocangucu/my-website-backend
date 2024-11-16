@@ -1,24 +1,32 @@
 import Joi from "joi";
 
+// TODO applicationDataValidator needs to be checked
+
+// Links and References are not required
+
 export const applicationDataValidator = Joi.object({
   applicationInitiationId: Joi.number().required().messages({
     "number.base": "Application Initiation ID must be a number",
     "any.required": "Application Initiation ID is required",
   }),
+
   personalInformation: Joi.object({
-    fullName: Joi.string().required().messages({
+    fullName: Joi.string().required().allow("").messages({
       "string.base": "Full Name must be a string",
       "string.empty": "Full Name is required",
     }),
-    emailAddress: Joi.string().email().allow("").messages({
+    emailAddress: Joi.string().email().required().allow("").messages({
       "string.base": "Email Address must be a string",
       "string.email": "Please provide a valid email address",
+      "string.empty": "Email Address is required",
     }),
-    phoneNumber: Joi.string().allow("").messages({
+    phoneNumber: Joi.string().required().allow("").messages({
       "string.base": "Phone Number must be a string",
+      "string.empty": "Phone Number is required",
     }),
-    preferredLanguage: Joi.string().allow("").messages({
+    preferredLanguage: Joi.string().required().allow("").messages({
       "string.base": "Preferred Language must be a string",
+      "string.empty": "Preferred Language is required",
     }),
   })
     .required()
@@ -27,28 +35,124 @@ export const applicationDataValidator = Joi.object({
       "object.empty": "Personal Information is required",
     }),
 
-  aboutProject: Joi.object({
-    websiteDescription: Joi.string().required().messages({
-      "string.base": "Website Description must be a string",
-      "string.empty": "Website Description is required",
+  aboutYou: Joi.object({
+    work: Joi.string().required().allow("").messages({
+      "string.base": "Work Information must be a string",
+      "string.empty": "Work Information is required",
     }),
-    websiteFeatures: Joi.array()
-      .items(Joi.string().allow(""))
-      .length(3)
+    projectContext: Joi.string().required().allow("").messages({
+      "string.base": "Project Context must be a string",
+      "string.empty": "Project Context is required",
+    }),
+  })
+    .required()
+    .messages({
+      "object.base": "About You must be an object",
+      "object.empty": "About You is required",
+    }),
+
+  aboutYourWebsite: Joi.object({
+    websiteReason: Joi.string().required().allow("").messages({
+      "string.base": "Website Reason must be a string",
+      "string.empty": "Website Reason is required",
+    }),
+    websiteMainDescription: Joi.string()
+      .max(500)
+      .required()
+      .allow("")
+      .messages({
+        "string.base": "Website Main Description must be a string",
+        "string.max": "Website Main Description cannot exceed 500 characters",
+        "string.empty": "Website Main Description is required",
+      }),
+    websiteFeaturesDescription: Joi.string()
+      .max(500)
+      .required()
+      .allow("")
+      .messages({
+        "string.base": "Website Features Description must be a string",
+        "string.max":
+          "Website Features Description cannot exceed 500 characters",
+        "string.empty": "Website Features Description is required",
+      }),
+    websiteMainFeature: Joi.string().required().allow("").messages({
+      "string.base": "Website Main Feature must be a string",
+      "string.empty": "Website Main Feature is required",
+    }),
+    websiteAdditionalFeatures: Joi.string().required().allow("").messages({
+      "string.base": "Website Additional Features must be a string",
+      "string.empty": "Website Additional Features is required",
+    }),
+    websiteContentMaterial: Joi.string().required().allow("").messages({
+      "string.base": "Website Content Material must be a string",
+      "string.empty": "Website Content Material is required",
+    }),
+  })
+    .required()
+    .messages({
+      "object.base": "About Your Website must be an object",
+      "object.empty": "About Your Website is required",
+    }),
+
+  linksAndReferences: Joi.object({
+    currentPresence: Joi.object({
+      link1: Joi.string().uri().required().allow("").messages({
+        "string.base": "Current Presence Link 1 must be a valid URL",
+        "string.uri": "Current Presence Link 1 must be a valid URL",
+        "string.empty": "Current Presence Link 1 is required",
+      }),
+      link2: Joi.string().uri().required().allow("").messages({
+        "string.base": "Current Presence Link 2 must be a valid URL",
+        "string.uri": "Current Presence Link 2 must be a valid URL",
+        "string.empty": "Current Presence Link 2 is required",
+      }),
+      link3: Joi.string().uri().required().allow("").messages({
+        "string.base": "Current Presence Link 3 must be a valid URL",
+        "string.uri": "Current Presence Link 3 must be a valid URL",
+        "string.empty": "Current Presence Link 3 is required",
+      }),
+    })
       .required()
       .messages({
-        "array.base": "Website Features must be an array",
-        "array.length": "Website Features must contain exactly 3 elements",
+        "object.base": "Current Presence Links must be an object",
+        "object.empty": "Current Presence Links are required",
+      }),
+    referenceWebsites: Joi.object({
+      link1: Joi.string().uri().required().allow("").messages({
+        "string.base": "Reference Website Link 1 must be a valid URL",
+        "string.uri": "Reference Website Link 1 must be a valid URL",
+        "string.empty": "Reference Website Link 1 is required",
+      }),
+      link2: Joi.string().uri().required().allow("").messages({
+        "string.base": "Reference Website Link 2 must be a valid URL",
+        "string.uri": "Reference Website Link 2 must be a valid URL",
+        "string.empty": "Reference Website Link 2 is required",
+      }),
+      link3: Joi.string().uri().required().allow("").messages({
+        "string.base": "Reference Website Link 3 must be a valid URL",
+        "string.uri": "Reference Website Link 3 must be a valid URL",
+        "string.empty": "Reference Website Link 3 is required",
+      }),
+    })
+      .required()
+      .messages({
+        "object.base": "Reference Website Links must be an object",
+        "object.empty": "Reference Website Links are required",
       }),
   })
     .required()
     .messages({
-      "object.base": "About Project must be an object",
-      "object.empty": "About Project is required",
+      "object.base": "Links and References must be an object",
+      "object.empty": "Links and References are required",
     }),
 
-  isCompleted: Joi.boolean().required().messages({
-    "boolean.base": "isCompleted must be a boolean",
-    "any.required": "isCompleted is required",
+  finalThoughts: Joi.string().required().allow("").messages({
+    "string.base": "Final Thoughts must be a string",
+    "string.empty": "Final Thoughts is required",
+  }),
+
+  isComplete: Joi.boolean().required().messages({
+    "boolean.base": "isComplete must be a boolean",
+    "any.required": "isComplete is required",
   }),
 });
