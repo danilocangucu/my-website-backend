@@ -108,15 +108,45 @@ export const createEmptyApplicationDetails = async (
   applicationInitiationId: number
 ): Promise<void> => {
   try {
+    // TODO email should be added when creating empty application
+
     const queryText = `
       INSERT INTO application_details 
-        (application_initiation_id, full_name, email_address, phone_number, preferred_language, website_url, website_description, website_features)
+        (
+          application_initiation_id,
+          full_name,
+          email_address,
+          phone_number,
+          preferred_language,
+          about_you_work,
+          about_project_context,
+          website_reason,
+          website_main_description,
+          website_features_description,
+          website_main_feature,
+          website_additional_features,
+          website_content_material,
+          current_presence_link1,
+          current_presence_link2,
+          current_presence_link3,
+          reference_website_link1,
+          reference_website_link2,
+          reference_website_link3,
+          final_thoughts,
+          is_complete,
+          created_at,
+          updated_at
+        )
       VALUES 
-        ($1, '', '', '', '', '', '', '') 
+        (
+          $1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+        )
       RETURNING id;
     `;
+
     const result = await hohohoPool.query(queryText, [applicationInitiationId]);
     const applicationDetailsId = result.rows[0].id;
+
     hohohoLogger.info(
       `Empty application details created for application initiation ID ${applicationInitiationId} with details ID ${applicationDetailsId}`
     );
