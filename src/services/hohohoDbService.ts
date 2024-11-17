@@ -243,7 +243,7 @@ export const updateApplicationDetailsInDB = async (
         website_additional_feature2 = $12,
         website_additional_feature3 = $13,
         website_content_material = $14,
-        is_complete = $15,
+        is_complete = $15
       WHERE application_initiation_id = $1
       RETURNING *;
     `;
