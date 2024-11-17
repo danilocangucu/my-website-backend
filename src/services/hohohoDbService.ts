@@ -236,7 +236,14 @@ export const updateApplicationDetailsInDB = async (
         preferred_language = $5,
         about_you_work = $6,
         about_project_context = $7,
-        is_complete = $8
+        website_reason = $8,
+        website_main_description = $9,
+        website_main_feature = $10,
+        website_additional_feature1 = $11,
+        website_additional_feature2 = $12,
+        website_additional_feature3 = $13,
+        website_content_material = $14,
+        is_complete = $15,
       WHERE application_initiation_id = $1
       RETURNING *;
     `;
@@ -251,7 +258,11 @@ export const updateApplicationDetailsInDB = async (
       applicationData.aboutYou.projectContext,
       applicationData.aboutYourWebsite.websiteReason,
       applicationData.aboutYourWebsite.websiteMainDescription,
-
+      applicationData.aboutYourWebsite.websiteMainFeature,
+      applicationData.aboutYourWebsite.websiteAdditionalFeatures.feature1,
+      applicationData.aboutYourWebsite.websiteAdditionalFeatures.feature2,
+      applicationData.aboutYourWebsite.websiteAdditionalFeatures.feature3,
+      applicationData.aboutYourWebsite.websiteContentMaterial,
       applicationData.isComplete,
     ]);
 
