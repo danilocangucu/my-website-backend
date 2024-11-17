@@ -235,7 +235,7 @@ export const updateApplicationDetailsInDB = async (
         preferred_language = $5,
         about_you_work = $6,
         about_project_context = $7,
-        iscompleted = $8
+        iscomplete = $8
       WHERE application_initiation_id = $1
       RETURNING *;
     `;

@@ -184,7 +184,7 @@ export const postApplicationService = async (
   res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   try {
-    const { isCompleted } = applicationData;
+    const { isComplete } = applicationData;
     // Check if the application exists in the DB
     const existingApplication = await getApplicationDetailsFromDB(
       applicationInitiationId
@@ -198,7 +198,7 @@ export const postApplicationService = async (
         message:
           "Application not found. Please ensure the correct initiation ID.",
       });
-    } else if (existingApplication.iscompleted) {
+    } else if (existingApplication.iscomplete) {
       hohohoLogger.warn(
         `Application already submitted for initiation ID ${applicationInitiationId}`
       );
@@ -219,7 +219,7 @@ export const postApplicationService = async (
       sanitizeApplicationDetails(updatedApplication);
 
     return res.status(200).send({
-      message: isCompleted
+      message: isComplete
         ? "Application submitted successfully."
         : "Application saved successfully.",
       application: sanitizedApplicationDetails,
