@@ -2,7 +2,7 @@ import Joi from "joi";
 
 // TODO applicationDataValidator needs to be checked
 
-// Links and References are not required
+// TODO Links and References are not required
 
 export const applicationDataValidator = Joi.object({
   applicationInitiationId: Joi.number().required().messages({
