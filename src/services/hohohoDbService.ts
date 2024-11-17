@@ -243,6 +243,12 @@ export const updateApplicationDetailsInDB = async (
         website_additional_feature2 = $12,
         website_additional_feature3 = $13,
         website_content_material = $14,
+        current_presence_link1 = $15,
+        current_presence_link2 = $16,
+        current_presence_link3 = $17,
+        reference_website_link1 = $18,
+        reference_website_link2 = $19,
+        reference_website_link3 = $20,
         is_complete = $15
       WHERE application_initiation_id = $1
       RETURNING *;
@@ -263,6 +269,12 @@ export const updateApplicationDetailsInDB = async (
       applicationData.aboutYourWebsite.websiteAdditionalFeatures.feature2,
       applicationData.aboutYourWebsite.websiteAdditionalFeatures.feature3,
       applicationData.aboutYourWebsite.websiteContentMaterial,
+      applicationData.linksAndReferences.currentPresence.link1,
+      applicationData.linksAndReferences.currentPresence.link2,
+      applicationData.linksAndReferences.currentPresence.link3,
+      applicationData.linksAndReferences.referenceWebsite.link1,
+      applicationData.linksAndReferences.referenceWebsite.link2,
+      applicationData.linksAndReferences.referenceWebsite.link3,
       applicationData.isComplete,
     ]);
 
