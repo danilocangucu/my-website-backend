@@ -80,6 +80,4 @@ export interface ApplicationDetailsDTO {
   };
   finalThoughts: string | null;
   isComplete: boolean;
-  createdAt: string;
-  updatedAt: string;
 }

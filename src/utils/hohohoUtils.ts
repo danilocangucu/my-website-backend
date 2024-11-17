@@ -39,8 +39,6 @@ export const sanitizeApplicationDetails = (
     reference_website_link3,
     final_thoughts,
     is_complete,
-    created_at,
-    updated_at,
   } = rawData;
 
   // Map snake_case to camelCase and sanitize
@@ -77,7 +75,5 @@ export const sanitizeApplicationDetails = (
     },
     finalThoughts: final_thoughts,
     isComplete: is_complete,
-    createdAt: created_at,
-    updatedAt: updated_at,
   };
 };
