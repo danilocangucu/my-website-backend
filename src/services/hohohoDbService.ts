@@ -125,7 +125,7 @@ export const createEmptyApplicationDetails = async (
           website_main_feature,
           website_additional_feature1,
           website_additional_feature2,
-          website_additional_feature3
+          website_additional_feature3,
           website_content_material,
           current_presence_link1,
           current_presence_link2,
