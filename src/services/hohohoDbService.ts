@@ -254,6 +254,8 @@ export const updateApplicationDetailsInDB = async (
       RETURNING *;
     `;
 
+    console.log("applicationData to update", applicationData);
+
     const result = await hohohoPool.query(updateQuery, [
       applicationInitiationId,
       applicationData.personalInformation.fullName,
