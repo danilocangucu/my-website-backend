@@ -226,9 +226,6 @@ export const updateApplicationDetailsInDB = async (
   applicationData: any
 ) => {
   try {
-    const websiteFeaturesString =
-      applicationData.aboutProject.websiteFeatures.join(",");
-
     const updateQuery = `
       UPDATE application_details
       SET
@@ -236,8 +233,8 @@ export const updateApplicationDetailsInDB = async (
         email_address = $3,
         phone_number = $4,
         preferred_language = $5,
-        website_description = $6,
-        website_features = $7,
+        about_you_work = $6,
+        about_project_context = $7,
         iscompleted = $8
       WHERE application_initiation_id = $1
       RETURNING *;
@@ -249,9 +246,9 @@ export const updateApplicationDetailsInDB = async (
       applicationData.personalInformation.emailAddress,
       applicationData.personalInformation.phoneNumber,
       applicationData.personalInformation.preferredLanguage,
-      applicationData.aboutProject.websiteDescription,
-      websiteFeaturesString,
-      applicationData.isCompleted,
+      applicationData.aboutYou.work,
+      applicationData.aboutYou.projectContext,
+      applicationData.isComplete,
     ]);
 
     if (result.rows.length === 0) {
