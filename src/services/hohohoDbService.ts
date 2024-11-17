@@ -249,7 +249,7 @@ export const updateApplicationDetailsInDB = async (
         reference_website_link1 = $18,
         reference_website_link2 = $19,
         reference_website_link3 = $20,
-        is_complete = $15
+        is_complete = $21
       WHERE application_initiation_id = $1
       RETURNING *;
     `;
