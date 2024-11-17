@@ -274,9 +274,9 @@ export const updateApplicationDetailsInDB = async (
       applicationData.linksAndReferences.currentPresence.link1,
       applicationData.linksAndReferences.currentPresence.link2,
       applicationData.linksAndReferences.currentPresence.link3,
-      applicationData.linksAndReferences.referenceWebsite.link1,
-      applicationData.linksAndReferences.referenceWebsite.link2,
-      applicationData.linksAndReferences.referenceWebsite.link3,
+      applicationData.linksAndReferences.referenceWebsites.link1,
+      applicationData.linksAndReferences.referenceWebsites.link2,
+      applicationData.linksAndReferences.referenceWebsites.link3,
       applicationData.isComplete,
     ]);
 
