@@ -65,23 +65,23 @@ export const applicationDataValidator = Joi.object({
         "string.max": "Website Main Description cannot exceed 500 characters",
         "string.empty": "Website Main Description is required",
       }),
-    websiteFeaturesDescription: Joi.string()
-      .max(500)
-      .required()
-      .allow("")
-      .messages({
-        "string.base": "Website Features Description must be a string",
-        "string.max":
-          "Website Features Description cannot exceed 500 characters",
-        "string.empty": "Website Features Description is required",
-      }),
     websiteMainFeature: Joi.string().required().allow("").messages({
       "string.base": "Website Main Feature must be a string",
       "string.empty": "Website Main Feature is required",
     }),
-    websiteAdditionalFeatures: Joi.string().required().allow("").messages({
-      "string.base": "Website Additional Features must be a string",
-      "string.empty": "Website Additional Features is required",
+    websiteAdditionalFeatures: Joi.object({
+      feature1: Joi.string().required().allow("").messages({
+        "string.base": "Feature 1 must be a valid string",
+        "string.empty": "Feature 1 is required",
+      }),
+      feature2: Joi.string().required().allow("").messages({
+        "string.base": "Feature 2 must be a valid string",
+        "string.empty": "Feature 2 is required",
+      }),
+      feature3: Joi.string().required().allow("").messages({
+        "string.base": "Feature 3 must be a valid string",
+        "string.empty": "Feature 3 is required",
+      }),
     }),
     websiteContentMaterial: Joi.string().required().allow("").messages({
       "string.base": "Website Content Material must be a string",

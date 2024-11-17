@@ -122,9 +122,10 @@ export const createEmptyApplicationDetails = async (
           about_project_context,
           website_reason,
           website_main_description,
-          website_features_description,
           website_main_feature,
-          website_additional_features,
+          website_additional_feature1,
+          website_additional_feature2,
+          website_additional_feature3
           website_content_material,
           current_presence_link1,
           current_presence_link2,
@@ -139,7 +140,7 @@ export const createEmptyApplicationDetails = async (
         )
       VALUES 
         (
-          $1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','', '', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+          $1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
         )
       RETURNING id;
     `;
@@ -248,6 +249,9 @@ export const updateApplicationDetailsInDB = async (
       applicationData.personalInformation.preferredLanguage,
       applicationData.aboutYou.work,
       applicationData.aboutYou.projectContext,
+      applicationData.aboutYourWebsite.websiteReason,
+      applicationData.aboutYourWebsite.websiteMainDescription,
+
       applicationData.isComplete,
     ]);
 

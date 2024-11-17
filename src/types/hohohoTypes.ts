@@ -25,9 +25,10 @@ export interface RawApplicationDetails {
   // About Your Website
   website_reason: string | null;
   website_main_description: string | null;
-  website_features_description: string | null;
   website_main_feature: string | null;
-  website_additional_features: string | null;
+  website_additional_feature1: string | null;
+  website_additional_feature2: string | null;
+  website_additional_feature3: string | null;
   website_content_material: string | null;
 
   // Links and References
@@ -61,9 +62,12 @@ export interface ApplicationDetailsDTO {
   aboutYourWebsite: {
     websiteReason: string | null;
     websiteMainDescription: string | null;
-    websiteFeaturesDescription: string | null;
     websiteMainFeature: string | null;
-    websiteAdditionalFeatures: string | null;
+    websiteAdditionalFeatures: {
+      feature1: string | null;
+      feature2: string | null;
+      feature3: string | null;
+    };
     websiteContentMaterial: string | null;
   };
   linksAndReferences: {

@@ -27,9 +27,10 @@ export const sanitizeApplicationDetails = (
     about_project_context,
     website_reason,
     website_main_description,
-    website_features_description,
     website_main_feature,
-    website_additional_features,
+    website_additional_feature1,
+    website_additional_feature2,
+    website_additional_feature3,
     website_content_material,
     current_presence_link1,
     current_presence_link2,
@@ -56,9 +57,12 @@ export const sanitizeApplicationDetails = (
     aboutYourWebsite: {
       websiteReason: website_reason,
       websiteMainDescription: website_main_description,
-      websiteFeaturesDescription: website_features_description,
       websiteMainFeature: website_main_feature,
-      websiteAdditionalFeatures: website_additional_features,
+      websiteAdditionalFeatures: {
+        feature1: website_additional_feature1,
+        feature2: website_additional_feature2,
+        feature3: website_additional_feature3,
+      },
       websiteContentMaterial: website_content_material,
     },
     linksAndReferences: {
