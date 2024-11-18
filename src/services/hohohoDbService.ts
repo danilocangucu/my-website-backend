@@ -107,7 +107,9 @@ export const getApplicationInitiationFromDB = async (
 };
 
 export const createEmptyApplicationDetails = async (
-  applicationInitiationId: number
+  applicationInitiationId: number,
+  applicationEmail: string,
+  applicationLang: "en" | "es" | "ptbr"
 ): Promise<void> => {
   try {
     // TODO email should be added when creating empty application
@@ -142,12 +144,16 @@ export const createEmptyApplicationDetails = async (
         )
       VALUES 
         (
-          $1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+          $1, '', $2, '', $3, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
         )
       RETURNING id;
     `;
 
-    const result = await hohohoPool.query(queryText, [applicationInitiationId]);
+    const result = await hohohoPool.query(queryText, [
+      applicationInitiationId,
+      applicationEmail,
+      applicationLang,
+    ]);
     const applicationDetailsId = result.rows[0].id;
 
     hohohoLogger.info(

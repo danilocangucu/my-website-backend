@@ -2,6 +2,7 @@ export interface ApplicationInitiation {
   id: number;
   email: string;
   code: string;
+  lang: "en" | "es" | "ptbr";
   created_at: string;
   expires_at: string;
   status: "pending" | "active" | "expired";
