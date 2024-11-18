@@ -22,7 +22,7 @@ export const registerApplication: RequestHandler = async (
     return;
   }
 
-  await registerApplicationService(value.email, res);
+  await registerApplicationService(value.email, value.lang, res);
 };
 
 export const loginApplication: RequestHandler = async (

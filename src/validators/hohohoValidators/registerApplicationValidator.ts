@@ -7,4 +7,9 @@ export const registerApplicationValidator = Joi.object({
     "string.empty": "Email is required",
     "string.email": "Please provide a valid email address",
   }),
+  lang: Joi.string().valid("en", "es", "ptbr").required().messages({
+    "any.only": "Language must be one of 'en', 'es', or 'ptbr'",
+    "string.base": "Language must be a string",
+    "string.empty": "Language is required",
+  }),
 });

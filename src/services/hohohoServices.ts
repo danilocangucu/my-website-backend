@@ -21,17 +21,37 @@ import { ApplicationInitiation } from "../types/hohohoTypes";
 
 export const sendApplicationCodeEmail = async (
   email: string,
+  lang: string,
   verificationCode: string
 ): Promise<void> => {
-  const subject = "Your Application Code";
-  const text = `Here is your application code: ${verificationCode}`;
-  const html = `<p>Here is your application code: <strong>${verificationCode}</strong></p>`;
+  const messages = {
+    en: {
+      subject: "Your Application Code",
+      text: `Here is your application code: ${verificationCode}. It will expire in 15 minutes.`,
+      html: `<p>Here is your application code: <strong>${verificationCode}</strong>. It will expire in 15 minutes.</p>`,
+    },
+    es: {
+      subject: "Tu Código de Aplicación",
+      text: `Aquí está tu código de aplicación: ${verificationCode}. Caducará en 15 minutos.`,
+      html: `<p>Aquí está tu código de aplicación: <strong>${verificationCode}</strong>. Caducará en 15 minutos.</p>`,
+    },
+    ptbr: {
+      subject: "Seu Código de Aplicação",
+      text: `Aqui está o seu código de aplicação: ${verificationCode}. Ele expirará em 15 minutos.`,
+      html: `<p>Aqui está o seu código de aplicação: <strong>${verificationCode}</strong>. Ele expirará em 15 minutos.</p>`,
+    },
+  };
+
+  type Lang = "en" | "es" | "ptbr";
+  const { subject, text, html } = messages[lang as Lang] || messages.en;
 
   await sendHohohoEmailService(email, subject, text, html);
 };
 
+
 export const registerApplicationService = async (
   email: string,
+  lang: string,
   res: Response
 ): Promise<Response<any, Record<string, any>>> => {
   const verificationCode = generateVerificationCode();
@@ -42,7 +62,7 @@ export const registerApplicationService = async (
 
     await logApplicationInitiationToDB(email, verificationCode, expiresAt);
 
-    await sendApplicationCodeEmail(email, verificationCode);
+    await sendApplicationCodeEmail(email, lang, verificationCode);
 
     return res.status(200).send({
       message: {
