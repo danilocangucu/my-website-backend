@@ -59,15 +59,21 @@ export const registerApplicationService = async (
       )
     ) {
       return res.status(400).send({
-        message:
-          "An application code has been already sent to your email. If you don’t see it, check your spam folder. You can request a new one in 15 minutes.",
+        message: {
+          en: "An application code has been already sent to your email. If you don’t see it, check your spam folder. You can request a new one in 15 minutes.",
+          es: "Ya se ha enviado un código de propuesta a tu correo electrónico. Si no lo ves, revisa tu carpeta de spam. Puedes solicitar uno nuevo en 15 minutos.",
+          ptbr: "Um código de proposta já foi enviado ao seu e-mail. Se não o encontrar, verifique a pasta de spam. Você pode solicitar um novo em 15 minutos.",
+        },
       });
     }
 
     hohohoLogger.error("Error in registerApplicationService:", error);
     return res.status(500).send({
-      message:
-        "Failed to send your email with the application code. Please try again later.",
+      message: {
+        en: "Failed to send your email with the application code. Please try again later.",
+        es: "No se pudo enviar el correo con el código de propuesta. Por favor, inténtalo de nuevo más tarde.",
+        ptbr: "Falha ao enviar o e-mail com o código de proposta. Por favor, tente novamente mais tarde.",
+      },
     });
   }
 };
