@@ -125,8 +125,6 @@ export const loginApplicationService = async (
     const applicationInitiation: ApplicationInitiation | null =
       await getApplicationInitiationFromDB(email, code);
 
-      console.log("applicationInitiation", applicationInitiation);
-
     if (!applicationInitiation) {
       return res.status(404).send({
         message:

@@ -80,7 +80,7 @@ export const logInstanceHealthToDB = async (
       actualInstanceId,
     ]);
     if (validationResult.rows.length === 0) {
-      console.log("Instance ID does not exist in the database");
+      logger.info("Instance ID does not exist in the database");
       throw new Error(
         `Instance ID ${actualInstanceId} does not exist in the database.`
       );
