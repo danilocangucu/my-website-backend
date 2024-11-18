@@ -44,9 +44,13 @@ export const registerApplicationService = async (
 
     await sendApplicationCodeEmail(email, verificationCode);
 
-    return res
-      .status(200)
-      .send({ message: "Email sent successfully with the application code." });
+    return res.status(200).send({
+      message: {
+        en: "Email sent successfully with the application code.",
+        es: "Correo con código enviado con éxito.",
+        ptbr: "Email com código enviado com sucesso.",
+      },
+    });
   } catch (error) {
     if (
       error instanceof Error &&
