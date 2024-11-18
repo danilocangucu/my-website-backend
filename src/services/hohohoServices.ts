@@ -146,7 +146,11 @@ export const loginApplicationService = async (
     }
 
     if (applicationInitiation.status === "pending") {
-      await createEmptyApplicationDetails(applicationInitiation.id);
+      await createEmptyApplicationDetails(
+        applicationInitiation.id,
+        applicationInitiation.email,
+        applicationInitiation.lang
+      );
       hohohoLogger.info(
         `Successful function call to createEmptyApplicationDetails with applicationInitiationId ${applicationInitiation.id}`
       );

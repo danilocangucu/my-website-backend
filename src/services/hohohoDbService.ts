@@ -112,8 +112,6 @@ export const createEmptyApplicationDetails = async (
   applicationLang: "en" | "es" | "ptbr"
 ): Promise<void> => {
   try {
-    // TODO email should be added when creating empty application
-
     const queryText = `
       INSERT INTO application_details 
         (
