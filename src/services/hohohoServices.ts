@@ -125,6 +125,8 @@ export const loginApplicationService = async (
     const applicationInitiation: ApplicationInitiation | null =
       await getApplicationInitiationFromDB(email, code);
 
+      console.log("applicationInitiation", applicationInitiation);
+
     if (!applicationInitiation) {
       return res.status(404).send({
         message:
@@ -149,7 +151,7 @@ export const loginApplicationService = async (
       await createEmptyApplicationDetails(
         applicationInitiation.id,
         applicationInitiation.email,
-        applicationInitiation.lang
+        applicationInitiation.preferred_language
       );
       hohohoLogger.info(
         `Successful function call to createEmptyApplicationDetails with applicationInitiationId ${applicationInitiation.id}`
