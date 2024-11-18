@@ -60,7 +60,12 @@ export const registerApplicationService = async (
     const expiresAt = new Date();
     expiresAt.setMinutes(expiresAt.getMinutes() + 15);
 
-    await logApplicationInitiationToDB(email, verificationCode, expiresAt);
+    await logApplicationInitiationToDB(
+      email,
+      verificationCode,
+      lang,
+      expiresAt
+    );
 
     await sendApplicationCodeEmail(email, lang, verificationCode);
 

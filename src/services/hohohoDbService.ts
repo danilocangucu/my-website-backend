@@ -4,6 +4,7 @@ import { hohohoLogger } from "../utils/logger";
 export const logApplicationInitiationToDB = async (
   email: string,
   verificationCode: string,
+  lang: string,
   expiresAt: Date
 ): Promise<void> => {
   try {
@@ -21,13 +22,14 @@ export const logApplicationInitiationToDB = async (
     }
 
     const insertQuery = `
-      INSERT INTO application_initiations (email, code, expires_at)
-      VALUES ($1, $2, $3) RETURNING id;
+      INSERT INTO application_initiations (email, code, preferred_language, expires_at)
+      VALUES ($1, $2, $3, $4) RETURNING id;
     `;
 
     const result = await hohohoPool.query(insertQuery, [
       email,
       verificationCode,
+      lang,
       expiresAt,
     ]);
 
