@@ -27,18 +27,18 @@ export const sendApplicationCodeEmail = async (
   const messages = {
     en: {
       subject: "Your Application Code",
-      text: `Here is your application code: ${verificationCode}. It will expire in 15 minutes.`,
-      html: `<p>Here is your application code: <strong>${verificationCode}</strong>. It will expire in 15 minutes.</p>`,
+      text: `Hello!\n\nThank you for your interest in starting an application.\n\nYour application code is: ${verificationCode}. It will expire in 15 minutes.\n\nLooking forward to receiving your application!\n\nDanilo Canguçu`,
+      html: `<p>Hello!</p><p>Thank you for your interest in starting an application.</p><p>Your application code is: <strong>${verificationCode}</strong>. It will expire in 15 minutes.</p><p>Looking forward to receiving your application!</p><p>Danilo Canguçu</p>`,
     },
     es: {
-      subject: "Tu Código de Aplicación",
-      text: `Aquí está tu código de aplicación: ${verificationCode}. Caducará en 15 minutos.`,
-      html: `<p>Aquí está tu código de aplicación: <strong>${verificationCode}</strong>. Caducará en 15 minutos.</p>`,
+      subject: "Tu Código para Propuesta",
+      text: `¡Hola!\n\nGracias por tu interés en iniciar una propuesta.\n\nTu código para la propuesta es: ${verificationCode}. Caducará en 15 minutos.\n\n¡Espero con interés recibir tu propuesta!\n\nDanilo Canguçu`,
+      html: `<p>¡Hola!</p><p>Gracias por tu interés en iniciar una propuesta.</p><p>Tu código para la propuesta es: <strong>${verificationCode}</strong>. Caducará en 15 minutos.</p><p>¡Espero con interés recibir tu propuesta!</p><p>Danilo Canguçu</p>`,
     },
     ptbr: {
-      subject: "Seu Código de Aplicação",
-      text: `Aqui está o seu código de aplicação: ${verificationCode}. Ele expirará em 15 minutos.`,
-      html: `<p>Aqui está o seu código de aplicação: <strong>${verificationCode}</strong>. Ele expirará em 15 minutos.</p>`,
+      subject: "Seu Código para Proposta",
+      text: `Olá!\n\nObrigado pelo seu interesse em iniciar uma proposta.\n\nO seu código para a proposta é: ${verificationCode}. Ele expirará em 15 minutos.\n\nAguardando ansiosamente a sua proposta!\n\nDanilo Canguçu`,
+      html: `<p>Olá!</p><p>Obrigado pelo seu interesse em iniciar uma proposta.</p><p>O seu código para a proposta é: <strong>${verificationCode}</strong>. Ele expirará em 15 minutos.</p><p>Aguardando ansiosamente a sua proposta!</p><p>Danilo Canguçu</p>`,
     },
   };
 
