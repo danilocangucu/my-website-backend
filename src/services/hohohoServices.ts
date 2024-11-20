@@ -26,19 +26,37 @@ export const sendApplicationCodeEmail = async (
 ): Promise<void> => {
   const messages = {
     en: {
-      subject: "Your Application Code",
-      text: `Hello!\n\nThank you for your interest in starting an application.\n\nYour application code is: ${verificationCode}. It will expire in 15 minutes.\n\nLooking forward to receiving your application!\n\nDanilo Canguçu`,
-      html: `<p>Hello!</p><p>Thank you for your interest in starting an application.</p><p>Your application code is: <strong>${verificationCode}</strong>. It will expire in 15 minutes.</p><p>Looking forward to receiving your application!</p><p>Danilo Canguçu</p>`,
+      subject: "Your Code to Get Started",
+      text: `Hello!\n\nThank you for your interest in starting an application. I'm so glad you're taking this first step!\n\nYour code is: ${verificationCode}. It will be valid for 15 minutes, so be sure to use it soon.\n\nOnce you log in, your application will be active. You’ll always need this code to access it again, so please keep it safe!\n\nI can’t wait to hear more about you and your proposal for the website.\n\nIf you have any questions or encounter any issues, feel free to reply to this email. I’ll respond as quickly as I can!\n\nBest regards,\nDanilo Canguçu`,
+      html: `<p>Hello!</p>
+      <p>Thank you for your interest in starting an application. I'm so glad you're taking this first step!</p>
+      <p>Your code is: <strong>${verificationCode}</strong>. It will be valid for 15 minutes, so be sure to use it soon.</p>
+      <p>Once you log in, your application will be active. You’ll always need this code to access it again, so please keep it safe!</p>
+      <p>I can’t wait to hear more about you and your proposal for the website.</p>
+      <p>If you have any questions or encounter any issues, feel free to reply to this email. I’ll respond as quickly as I can!</p>
+      <p>Best regards,<br>Danilo Canguçu</p>`,
     },
     es: {
-      subject: "Tu Código para Propuesta",
-      text: `¡Hola!\n\nGracias por tu interés en iniciar una propuesta.\n\nTu código para la propuesta es: ${verificationCode}. Caducará en 15 minutos.\n\n¡Espero con interés recibir tu propuesta!\n\nDanilo Canguçu`,
-      html: `<p>¡Hola!</p><p>Gracias por tu interés en iniciar una propuesta.</p><p>Tu código para la propuesta es: <strong>${verificationCode}</strong>. Caducará en 15 minutos.</p><p>¡Espero con interés recibir tu propuesta!</p><p>Danilo Canguçu</p>`,
+      subject: "Tu Código para Comenzar",
+      text: `¡Hola!\n\nGracias por tu interés en iniciar una propuesta. ¡Estoy muy contento de que estés dando este primer paso!\n\nTu código es: ${verificationCode}. Será válido por 15 minutos, así que úsalo pronto.\n\nUna vez que inicies sesión, tu propuesta estará activa. Siempre necesitarás este código para acceder a ella nuevamente, ¡así que guárdalo bien!\n\nEstoy ansioso por saber más sobre ti y tu propuesta para el sitio web.\n\nSi tienes preguntas o encuentras algún problema, no dudes en responder a este correo. ¡Te responderé lo antes posible!\n\nSaludos,\nDanilo Canguçu`,
+      html: `<p>¡Hola!</p>
+      <p>Gracias por tu interés en iniciar una propuesta. ¡Estoy muy contento de que estés dando este primer paso!</p>
+      <p>Tu código es: <strong>${verificationCode}</strong>. Será válido por 15 minutos, así que úsalo pronto.</p>
+      <p>Una vez que inicies sesión, tu propuesta estará activa. Siempre necesitarás este código para acceder a ella nuevamente, ¡así que guárdalo bien!</p>
+      <p>Estoy ansioso por saber más sobre ti y tu propuesta para el sitio web.</p>
+      <p>Si tienes preguntas o encuentras algún problema, no dudes en responder a este correo. ¡Te responderé lo antes posible!</p>
+      <p>Saludos,<br>Danilo Canguçu</p>`,
     },
     ptbr: {
-      subject: "Seu Código para Proposta",
-      text: `Olá!\n\nObrigado pelo seu interesse em iniciar uma proposta.\n\nO seu código para a proposta é: ${verificationCode}. Ele expirará em 15 minutos.\n\nAguardando ansiosamente a sua proposta!\n\nDanilo Canguçu`,
-      html: `<p>Olá!</p><p>Obrigado pelo seu interesse em iniciar uma proposta.</p><p>O seu código para a proposta é: <strong>${verificationCode}</strong>. Ele expirará em 15 minutos.</p><p>Aguardando ansiosamente a sua proposta!</p><p>Danilo Canguçu</p>`,
+      subject: "Seu Código para Começar",
+      text: `Olá!\n\nObrigado pelo seu interesse em iniciar uma proposta. Fico muito feliz que você esteja dando este primeiro passo!\n\nO seu código é: ${verificationCode}. Ele será válido por 15 minutos, então use-o logo.\n\nAssim que você fizer login, sua proposta estará ativa. Você sempre precisará deste código para acessá-la novamente, então guarde-o bem!\n\nMal posso esperar para saber mais sobre você e sua proposta para o site.\n\nSe tiver dúvidas ou problemas, é só responder a este e-mail. Vou te responder o mais rápido possível!\n\nAtenciosamente,\nDanilo Canguçu`,
+      html: `<p>Olá!</p>
+      <p>Obrigado pelo seu interesse em iniciar uma proposta. Fico muito feliz que você esteja dando este primeiro passo!</p>
+      <p>O seu código é: <strong>${verificationCode}</strong>. Ele será válido por 15 minutos, então use-o logo.</p>
+      <p>Assim que você fizer login, sua proposta estará ativa. Você sempre precisará deste código para acessá-la novamente, então guarde-o bem!</p>
+      <p>Mal posso esperar para saber mais sobre você e sua proposta para o site.</p>
+      <p>Se tiver dúvidas ou problemas, é só responder a este e-mail. Vou te responder o mais rápido possível!</p>
+      <p>Atenciosamente,<br>Danilo Canguçu</p>`,
     },
   };
 
@@ -48,6 +66,48 @@ export const sendApplicationCodeEmail = async (
   await sendHohohoEmailService(email, subject, text, html);
 };
 
+export const sendApplicationSubmittedEmail = async (
+  email: string,
+  lang: string
+): Promise<void> => {
+  const messages = {
+    en: {
+      subject: "Your Application Submission",
+      text: `Hello!\n\nYour application was submitted successfully!\n\nThe selection process will end on December 22nd. You’ll be informed if your proposal has been selected between the 22nd and 24th. However, please note that I may contact you for a video chat before then, or in case your application is not selected.\n\nIn the meantime, you can log in and check the status of your submission by clicking the link here: https://danilocangucu.net/hohoho/my-application?lang=en\n\nThank you for your interest and good luck!\n\nKind regards,\nDanilo Canguçu`,
+      html: `<p>Hello!</p>
+      <p>Your application was submitted successfully!</p>
+      <p>The selection process will conclude on December 22nd. You’ll be informed if your proposal has been selected between the 22nd and 24th. However, please note that I may contact you for a video chat before then, or in case your application is not selected.</p>
+      <p>In the meantime, you can log in and check the details of your submission by clicking the link here: <a href="https://danilocangucu.net/hohoho/my-application?lang=en">here</a>.</p>
+      <p>Thank you for your interest and good luck!</p>
+      <p>Kind regards,<br>Danilo Canguçu</p>`,
+    },
+    es: {
+      subject: "Tu Propuesta ha Sido Enviada",
+      text: `¡Hola!\n\n¡Tu propuesta fue enviada con éxito!\n\nEl proceso de selección finalizará el 22 de diciembre. Serás informadx si tu propuesta fue seleccionada entre el 22 y el 24 de diciembre. Sin embargo, ten en cuenta que podría contactarte antes de esa fecha para una videollamada, o en caso de que tu propuesta no sea seleccionada.\n\nMientras tanto, puedes iniciar sesión y revisar los detalles de tu envío haciendo clic en el siguiente enlace: https://danilocangucu.net/hohoho/my-application?lang=es\n\n¡Gracias por tu interés y mucha suerte!\n\nSaludos,\nDanilo Canguçu`,
+      html: `<p>¡Hola!</p>
+      <p>¡Tu propuesta fue enviada con éxito!</p>
+      <p>El proceso de selección finalizará el 22 de diciembre. Serás informadx si tu propuesta fue seleccionada entre el 22 y el 24 de diciembre. Sin embargo, ten en cuenta que podría contactarte antes de esa fecha para una videollamada, o en caso de que tu propuesta no sea seleccionada.</p>
+      <p>Mientras tanto, puedes iniciar sesión y revisar los detalles de tu envío haciendo clic en el siguiente enlace: <a href="https://danilocangucu.net/hohoho/my-application?lang=es">aquí</a>.</p>
+      <p>¡Gracias por tu interés y mucha suerte!</p>
+      <p>Saludos,<br>Danilo Canguçu</p>`,
+    },
+    ptbr: {
+      subject: "Sua Proposta Foi Enviada",
+      text: `Olá!\n\nSua proposta foi enviada com sucesso!\n\nO processo de seleção terminará no dia 22 de dezembro. Você será informade se sua proposta foi selecionada entre os dias 22 e 24 de dezembro. No entanto, vale ressaltar que posso entrar em contato com você antes dessa data para uma conversa por videochamada, ou caso sua proposta não seja selecionada.\n\nEnquanto isso, você pode fazer login e revisar os detalhes da sua proposta clicando no link aqui: https://danilocangucu.net/hohoho/my-application?lang=ptbr\n\nAgradeço pelo seu interesse e boa sorte!\n\nAtenciosamente,\nDanilo Canguçu`,
+      html: `<p>Olá!</p>
+      <p>Sua proposta foi enviada com sucesso!</p>
+      <p>O processo de seleção terminará no dia 22 de dezembro. Você será informade se sua proposta foi selecionada entre os dias 22 e 24 de dezembro. No entanto, vale ressaltar que posso entrar em contato com você antes dessa data para uma conversa por videochamada, ou caso sua proposta não seja selecionada.</p>
+      <p>Enquanto isso, você pode fazer login e revisar os detalhes da sua proposta clicando no link aqui: <a href="https://danilocangucu.net/hohoho/my-application?lang=ptbr">aqui</a>.</p>
+      <p>Agradeço pelo seu interesse e boa sorte!</p>
+      <p>Atenciosamente,<br>Danilo Canguçu</p>`,
+    },
+  };
+
+  type Lang = "en" | "es" | "ptbr";
+  const { subject, text, html } = messages[lang as Lang] || messages.en;
+
+  await sendHohohoEmailService(email, subject, text, html);
+};
 
 export const registerApplicationService = async (
   email: string,
@@ -256,6 +316,19 @@ export const postApplicationService = async (
 
     const sanitizedApplicationDetails =
       sanitizeApplicationDetails(updatedApplication);
+
+    if (isComplete) {
+      hohohoLogger.info(
+        `Application marked as complete for initiation ID ${applicationInitiationId}`
+      );
+      await sendApplicationSubmittedEmail(
+        applicationData.email,
+        applicationData.personalInformation.preferredLanguage
+      );
+      hohohoLogger.info(
+        `Email sent successfully for application submission for initiation ID ${applicationInitiationId}`
+      );
+    }
 
     return res.status(200).send({
       message: isComplete
