@@ -3,7 +3,6 @@ import xss from "xss";
 
 const sanitizeInput = (value: any): string => {
   if (value && typeof value === "string") {
-    console.log("Sanitizing input:", value);
     const sanitizedValue = xss(value);
     return sanitizedValue;
   }
