@@ -322,7 +322,7 @@ export const postApplicationService = async (
         `Application marked as complete for initiation ID ${applicationInitiationId}`
       );
       await sendApplicationSubmittedEmail(
-        applicationData.email,
+        applicationData.personalInformation.emailAddress,
         applicationData.personalInformation.preferredLanguage
       );
       hohohoLogger.info(
