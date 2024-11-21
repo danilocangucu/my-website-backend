@@ -143,17 +143,17 @@ export const applicationDataValidator = Joi.object({
 
   linksAndReferences: Joi.object({
     currentPresence: Joi.object({
-      link1: Joi.string().uri().allow("").custom(sanitizeInput).messages({
+      link1: Joi.string().allow("").custom(sanitizeInput).messages({
         "string.base": "Current Presence Link 1 must be a valid URL",
         "string.uri": "Current Presence Link 1 must be a valid URL",
         "string.empty": "Current Presence Link 1 is required",
       }),
-      link2: Joi.string().uri().allow("").custom(sanitizeInput).messages({
+      link2: Joi.string().allow("").custom(sanitizeInput).messages({
         "string.base": "Current Presence Link 2 must be a valid URL",
         "string.uri": "Current Presence Link 2 must be a valid URL",
         "string.empty": "Current Presence Link 2 is required",
       }),
-      link3: Joi.string().uri().allow("").custom(sanitizeInput).messages({
+      link3: Joi.string().allow("").custom(sanitizeInput).messages({
         "string.base": "Current Presence Link 3 must be a valid URL",
         "string.uri": "Current Presence Link 3 must be a valid URL",
         "string.empty": "Current Presence Link 3 is required",
@@ -165,17 +165,17 @@ export const applicationDataValidator = Joi.object({
         "object.empty": "Current Presence Links are required",
       }),
     referenceWebsites: Joi.object({
-      link1: Joi.string().uri().allow("").custom(sanitizeInput).messages({
+      link1: Joi.string().allow("").custom(sanitizeInput).messages({
         "string.base": "Reference Website Link 1 must be a valid URL",
         "string.uri": "Reference Website Link 1 must be a valid URL",
         "string.empty": "Reference Website Link 1 is required",
       }),
-      link2: Joi.string().uri().allow("").custom(sanitizeInput).messages({
+      link2: Joi.string().allow("").custom(sanitizeInput).messages({
         "string.base": "Reference Website Link 2 must be a valid URL",
         "string.uri": "Reference Website Link 2 must be a valid URL",
         "string.empty": "Reference Website Link 2 is required",
       }),
-      link3: Joi.string().uri().allow("").custom(sanitizeInput).messages({
+      link3: Joi.string().allow("").custom(sanitizeInput).messages({
         "string.base": "Reference Website Link 3 must be a valid URL",
         "string.uri": "Reference Website Link 3 must be a valid URL",
         "string.empty": "Reference Website Link 3 is required",
