@@ -60,7 +60,6 @@ export const handleEC2Action = async (
     logger.info(
       `Handling EC2 action "${action}" done. Lambda response received with status: ${responseFromLambda.status}`
     );
-    console.log("Returning response from lambda");
     return responseFromLambda;
   } catch (err) {
     logger.error(
