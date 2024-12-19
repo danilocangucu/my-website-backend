@@ -100,7 +100,20 @@ export const terminateEC2InstanceService = async (
   }
 
   const payload = createPayload(amiId!, projectName, InstanceState.TERMINATE);
-  return handleEC2Action(payload, InstanceState.TERMINATE);
+
+  const result = await handleEC2Action(payload, InstanceState.TERMINATE);
+  console.log("result:", result);
+  if (result.status !== 200) {
+    console.log("1 returning status");
+    return res.status(Number(result.status)).json({
+      message: result.message,
+    });
+  } else {
+    console.log("2 returning status");
+    return res.status(Number(result.status)).json({
+      message: result.message,
+    });
+  }
 };
 
 // TODO how could getEC2InstanceHealthService be refactored?
